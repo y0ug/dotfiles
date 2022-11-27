@@ -43,7 +43,6 @@ if [ ! -e ${HOME}/.dotfiles ]; then
 	git clone ${GIT_REPO_PREFIX}/dotfiles.git ${HOME}/.dotfiles
 fi
 
-
 if [ ! -e ${HOME}/.vim/autoload/plug.vim ]; then
 	curl -fLo ${HOME}/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
