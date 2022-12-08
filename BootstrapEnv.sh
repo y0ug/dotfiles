@@ -36,7 +36,10 @@ if [ "$MODE" = "private" ]; then
 	if [ ! -e ${HOME}/.dotfiles-private ]; then
 		git clone ${GIT_REPO_PREFIX}/dotfiles-private.git ${HOME}/.dotfiles-private
 	fi
-	ln -fs ${HOME}/.dotfiles-private/ssh/config ${HOME}/.ssh/config
+	# Avoid override if exist, should check if http_proxy exist
+	if [ ! -e ${HOME}/.ssh/config ]; then
+		ln -fs ${HOME}/.dotfiles-private/ssh/config ${HOME}/.ssh/config
+	fi
 fi
 
 if [ ! -e ${HOME}/.dotfiles ]; then
