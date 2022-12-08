@@ -17,9 +17,9 @@ echo "Mode: ${MODE}"
 #[ ! -e /usr/bin/zsh ] && sudo apt install zsh
 
 if [ -e /proc/sys/fs/binfmt_misc/WSLInterop ]; then
-	[ ! -e /usr/bin/keychain ] && sudo apt install keychain
+	[ ! -e /usr/bin/keychain ] && sudo apt install keychain -y
 	[ -z $SSH_AUTH_SOCK ] && eval `keychain --eval --agents ssh id_rsa`
-	[ ! -e /usr/bin/zsh ] && sudo apt install zsh
+	[ ! -e /usr/bin/zsh ] && sudo apt install zsh -y
 fi
 
 mkdir -p ${HOME}/.local/bin
