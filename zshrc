@@ -85,7 +85,14 @@ if [ -e /proc/sys/fs/binfmt_misc/WSLInterop ]; then
 	# wget -O ~/.dircolors https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.256dark  
 	if [ -f ~/.dir_colors ]; then  
 		eval `dircolors ~/.dircolors`
-	fi 
+	fi
+
+	if type "nvim.exe" > /dev/null; then	
+		nvim ()
+		{
+			nvim.exe --server \\\\.\\pipe\\nvim --remote $(wslpath -w $@)
+		}
+	fi
 fi
 
 
