@@ -11,10 +11,10 @@ fi
 
 echo "Mode: ${MODE}"
 
-[ ! -e /usr/bin/git ] && sudo apt install git
-[ ! -e /usr/bin/curl ] && sudo apt install curl
-[ ! -e /usr/bin/vim ] && sudo apt install vim
-#[ ! -e /usr/bin/zsh ] && sudo apt install zsh
+[ ! -e /usr/bin/git ] && sudo apt install git -y
+[ ! -e /usr/bin/curl ] && sudo apt install curl -y
+[ ! -e /usr/bin/vim ] && sudo apt install vim -y
+#[ ! -e /usr/bin/zsh ] && sudo apt install zsh -y
 
 if [ -e /proc/sys/fs/binfmt_misc/WSLInterop ]; then
 	[ ! -e /usr/bin/keychain ] && sudo apt install keychain -y
