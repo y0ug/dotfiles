@@ -67,5 +67,5 @@ git config --global user.name "Hugo Caron"
 
 if [ -z "$(grep EDITOR ${HOME}/.profile)" ]
 then
-	echo "EDITOR=vim" > ${HOME}/.profile
+	echo "EDITOR=vim" >> ${HOME}/.profile
 fi
