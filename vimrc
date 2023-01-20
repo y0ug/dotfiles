@@ -69,6 +69,7 @@ Plug 'rakr/vim-one'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'sheerun/vim-polyglot'
 "Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+Plug 'isobit/vim-caddyfile'
 call plug#end()
 
 try
