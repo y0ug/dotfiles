@@ -69,7 +69,11 @@ Plug 'rakr/vim-one'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'sheerun/vim-polyglot'
 "Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+<<<<<<< HEAD
 Plug 'pearofducks/ansible-vim'
+=======
+Plug 'isobit/vim-caddyfile'
+>>>>>>> refs/remotes/origin/main
 call plug#end()
 
 try
