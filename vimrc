@@ -69,6 +69,7 @@ Plug 'rakr/vim-one'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'sheerun/vim-polyglot'
 "Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+Plug 'pearofducks/ansible-vim'
 call plug#end()
 
 try
@@ -145,8 +146,8 @@ autocmd BufReadPost *
 	\ |   exe "normal! g`\""
 	\ | endif
 
-autocmd FileType yaml setlocal ts=2 sw=2 sts=0 expandtab
-autocmd FileType yaml.ansible setlocal ts=2 sw=2 sts=0 expandtab
+"autocmd FileType yaml setlocal ts=2 sw=2 sts=0 expandtab
+"autocmd FileType yaml.ansible setlocal ts=2 sw=2 sts=0 expandtab
 autocmd Filetype python setlocal ts=4 sw=4 sts=0 expandtab
 autocmd Filetype javascript setlocal ts=4 sw=4 sts=0 expandtab
 autocmd FileType markdown setlocal spell
