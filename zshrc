@@ -37,9 +37,9 @@ plugins=(git
 # PROMPT
 ###
 local hostname="%{$fg_bold[black]%}%m"
-local ret_status="%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ %s)"
-local ret_status="%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ %s)"
-PROMPT='${hostname} ${ret_status}%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'
+local ret_status="%(?:%{$fg_bold[green]%}> :%{$fg_bold[red]%}> %s)"
+local ret_status="%(?:%{$fg_bold[green]%}> :%{$fg_bold[red]%}> %s)"
+PROMPT='${hostname} ${ret_status}%{$fg_bold[green]%}%p%{$fg[cyan]%}%c%{$fg_bold[blue]%} $(git_prompt_info)%{$fg_bold[blue]%} % %{$reset_color%}'
 
 ###
 # ENV
@@ -80,7 +80,7 @@ datetz ()
 
 # Windows machine
 if [ -e /proc/sys/fs/binfmt_misc/WSLInterop ]; then
-	eval `keychain --eval --agents ssh id_rsa`
+	eval `keychain -q --eval --agents ssh id_rsa`
 
 	# wget -O ~/.dircolors https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.256dark  
 	if [ -f ~/.dir_colors ]; then  
