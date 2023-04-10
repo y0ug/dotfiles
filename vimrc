@@ -69,13 +69,16 @@ Plug 'rakr/vim-one'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'sheerun/vim-polyglot'
 "Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
-Plug 'pearofducks/ansible-vim'
-Plug 'isobit/vim-caddyfile'
+"Plug 'pearofducks/ansible-vim'
+"Plug 'isobit/vim-caddyfile'
+"Plug 'w0rp/ale'
+Plug 'tpope/vim-commentary'
+Plug 'tomasiser/vim-code-dark'
 call plug#end()
 
 try
 	set background=dark
-	colorscheme one 
+	colorscheme codedark 
 	set termguicolors
 	let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
 	let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
