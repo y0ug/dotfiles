@@ -34,6 +34,9 @@ fi
 
 NVIM_PATH=$(command -v nvim)
 mkdir -p ~/.local/bin/
-ln -s $NVIM_PATH ~/.local/bin/vim
-ln -s $NVIM_PATH ~/.local/bin/editor
-ln -s $NVIM_PATH ~/.local/bin/vi
+ln -fs $NVIM_PATH ~/.local/bin/vim
+ln -fs $NVIM_PATH ~/.local/bin/editor
+ln -fs $NVIM_PATH ~/.local/bin/vi
+
+mkdir -p ~/.config
+ln -fs ~/.dotfiles/nvim ~/.config/nvim
