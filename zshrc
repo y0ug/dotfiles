@@ -22,12 +22,12 @@ export UPDATE_ZSH_DAYS=31
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 plugins=(git
 	dotenv
- 	macos
+	macos
 	vagrant
 	docker
 	systemd)
 
-[[ -e $ZSH/oh-my-zsh.sh ]] && source $ZSH/oh-my-zsh.sh
+	[[ -e $ZSH/oh-my-zsh.sh ]] && source $ZSH/oh-my-zsh.sh
 
 # Hack to load the profile
 [[ -e /etc/profile ]] && emulate sh -c 'source /etc/profile'
@@ -35,7 +35,7 @@ plugins=(git
 
 ###
 # PROMPT
-###
+##
 local hostname="%{$fg_bold[black]%}%m"
 local ret_status="%(?:%{$fg_bold[green]%}> :%{$fg_bold[red]%}> %s)"
 local ret_status="%(?:%{$fg_bold[green]%}> :%{$fg_bold[red]%}> %s)"
@@ -44,8 +44,7 @@ PROMPT='${hostname} ${ret_status}%{$fg_bold[green]%}%p%{$fg[cyan]%}%c%{$fg_bold[
 ###
 # ENV
 ###
-export PATH=$PATH:$HOME/.local/bin/
-
+export PATH=$HOME/.local/bin/:$PATH
 export LANG=en_US.UTF-8
 export HOSTNAME=$(hostname -s)
 export EDITOR="vim"
@@ -85,13 +84,6 @@ if [ -e /proc/sys/fs/binfmt_misc/WSLInterop ]; then
 	# wget -O ~/.dircolors https://raw.githubusercontent.com/seebi/dircolors-solarized/master/dircolors.256dark  
 	if [ -f ~/.dir_colors ]; then  
 		eval `dircolors ~/.dircolors`
-	fi
-
-	if type "nvim.exe" > /dev/null; then	
-		nvim ()
-		{
-			nvim.exe --server \\\\.\\pipe\\nvim --remote $(wslpath -w $@)
-		}
 	fi
 fi
 

@@ -4,9 +4,13 @@
 " Plug setup
 " sh -c 'curl -fLo ${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 " iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |` ni "$(@($env:XDG_DATA_HOME, $env:LOCALAPPDATA)[$null -eq $env:XDG_DATA_HOME])/nvim-data/site/autoload/plug.vim" -Force"
-"
+
+
 let mapleader = ","
 let g:mapleader = ","
+
+" Need to be set first due to theme
+syntax on
 
 
 if exists('g:vscode')
@@ -19,16 +23,18 @@ else
 	" ordinary Neovim
 	call plug#begin()
 	Plug 'tpope/vim-commentary'
+	Plug 'gosukiwi/vim-atom-dark'
+	Plug 'joshdick/onedark.vim'
 	"Plug 'tomasiser/vim-code-dark'
 	Plug 'Mofiqul/vscode.nvim'
 	
 	Plug 'neovim/nvim-lspconfig'
+	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 	Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 	Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
 	Plug 'sbdchd/neoformat'
 
 	call plug#end()
-	"colorscheme codedark 
 
 	" Neoformat to use a project-local version of Prettier
 	let g:neoformat_try_node_exe = 1
@@ -36,7 +42,9 @@ else
 	autocmd BufWritePre,TextChanged *.md Neoformat
 	autocmd BufWritePre,TextChanged *.py Neoformat
 
+	"colorscheme onedark 
 	lua <<EOF
+require('vscode').load('dark')
 EOF
 
 endif

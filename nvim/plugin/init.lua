@@ -1,4 +1,10 @@
-require('vscode').load('dark')
+require'nvim-treesitter.configs'.setup {
+  -- A list of parser names, or "all" (the five listed parsers should always be installed)
+  ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "python" },
+  highlight = {
+    enable = true
+}
+}
 
 local lspconfig = require('lspconfig')
 lspconfig.pyright.setup {}
