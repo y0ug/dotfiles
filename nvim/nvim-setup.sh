@@ -25,6 +25,7 @@ then
 		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
+mkdir -p ~/.local/bin/
 if ! command -v nvim &> /dev/null
 then
 	echo "installing nvim"
@@ -33,14 +34,20 @@ then
 		sudo add-apt-repository ppa:neovim-ppa/unstable
 		sudo apt-get update
 		sudo apt-get install neovim
+	else
+		URL_NVIM=https://github.com/neovim/neovim/releases/download/v0.9.0/nvim-linux64.tar.gz
+		wget -O /tmp/nvim.tar.gz $URL_NVIM
+		tar --strip-components 1 -xvf nvim-linux64.tar.gz  -C ~/.local
+		rm /tmp/nvim.tar.gz
 	fi
 fi
 
 NVIM_PATH=$(command -v nvim)
-mkdir -p ~/.local/bin/
-ln -fs $NVIM_PATH ~/.local/bin/vim
-ln -fs $NVIM_PATH ~/.local/bin/editor
-ln -fs $NVIM_PATH ~/.local/bin/vi
+if [ -e "$NVIM_PATH" ]; then
+	ln -fs $NVIM_PATH ~/.local/bin/vim
+	ln -fs $NVIM_PATH ~/.local/bin/editor
+	ln -fs $NVIM_PATH ~/.local/bin/vi
+fi
 
 mkdir -p ~/.config
 ln -fs ~/.dotfiles/nvim ~/.config/nvim
