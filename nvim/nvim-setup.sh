@@ -58,7 +58,7 @@ fi
 
 if [[ -n ${LAZY_VIM} ]] && [[ -z "$(grep lazy.nvim ~/.config/nvim/init.lua 2>/dev/null)" ]]; then
 
-	if [-f /etc/debian_version]; then
+	if [ -f /etc/debian_version ]; then
 		echo "[*] installing LazyVim deps"
 		sudo apt install build-essential unzip
 	fi
