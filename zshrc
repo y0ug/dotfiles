@@ -10,6 +10,10 @@ zstyle ':omz:update' mode auto
 [[ -e /etc/profile ]] && emulate sh -c 'source /etc/profile'
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
 
+# OSx doesn't have .profile that set the local bin
+local_bin="${HOME}/.local/bin"
+[[ ":$PATH:" != *":$local_bin:"* ]] && [[ -d $local_bin ]] && PATH="$local_bin:$PATH"
+
 plugins=(git
   zsh-autosuggestions
   zsh-syntax-highlighting
