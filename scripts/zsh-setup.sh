@@ -13,6 +13,13 @@ HOME="${HOME:-$(getent passwd $USER 2>/dev/null | cut -d: -f6)}"
 # macOS does not have getent, but this works even if $HOME is unset
 HOME="${HOME:-$(eval echo ~$USER)}"
 
+CHSH=${CHSH:-yes}
+KEEP_ZSHRC=${KEEP_ZSHRC:-yes}
+
+# OhMyZsh install script
+omz_setup="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+
+# Plugins repository
 repos=(
   "https://github.com/zsh-users/zsh-autosuggestions"
   "https://github.com/zsh-users/zsh-completions"
@@ -20,8 +27,6 @@ repos=(
   "https://github.com/zsh-users/zsh-syntax-highlighting"
 )
 
-
-omz_setup="https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
 
 # Check if the OS is Alpine
 if [ -f /etc/alpine-release ]; then
@@ -41,7 +46,7 @@ else
 fi
 
 if [ ! -d ${HOME}/.oh-my-zsh/ ]; then
-	KEEP_ZSHRC=no CHSH=no RUNZSH=no sh -c "$(curl -fsSL ${omz_setup})" --unattended
+	RUNZSH=no sh -c "$(curl -fsSL ${omz_setup})" --unattended
 else
 	echo "[*] Updating OhMyZsh"
 	${HOME}/.oh-my-zsh/tools/upgrade.sh
@@ -52,10 +57,10 @@ for repo in "${repos[@]}"; do
   base_dest="${HOME}/.oh-my-zsh/custom/plugins"
   repo_dest="${base_dest}/${repo_name}"
 	if [ -d "${repo_dest}" ]; then
-    echo "Updating: $repo_name"
+    echo "[*] Updating: $repo_name"
     cd "$repo_dest" && git pull
   else
-    echo "Cloning $repo_name"
+    echo "[*] Cloning $repo_name"
     git clone "$repo" "$repo_dest"
   fi 
 done
