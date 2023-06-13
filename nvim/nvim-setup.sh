@@ -1,53 +1,83 @@
 #!/bin/bash
+LAZY_VIM=1
 
-if ! command -v node &> /dev/null
-then
-	echo "installing NVM then node"
+echo "[*] required folder exist"
+mkdir -p ~/.local/bin/
+mkdir -p ~/.config
+
+if ! command -v node &>/dev/null; then
+	echo "[*] installing NVM then node"
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 
 	export NVM_DIR="$HOME/.nvm"
-	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+	[[ -s "$NVM_DIR/nvm.sh" ]] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+	[[ -s "$NVM_DIR/bash_completion" ]] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 	nvm install node
-	npm i -g pyright
 fi
 
-if ! python3 -m venv -h &> /dev/null
-then
-	echo "installing python3 venv"
+if ! python3 -m venv -h &>/dev/null; then
+	echo "[*] installing python3 venv"
 	python3 -m pip install venv --user
 fi
 
-PLUG_DIR="${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim
-if [[ ! -f ${PLUG_DIR} ]]
-then
-	curl -fLo ${PLUG_DIR} --create-dirs \
-		https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-fi
-
-mkdir -p ~/.local/bin/
-if ! command -v nvim &> /dev/null
-then
-	echo "installing nvim"
-	if [ -f /etc/lsb-release ]; then
+if ! command -v nvim &>/dev/null; then
+	if [[ -f /etc/lsb-release ]]; then
+		echo "[*] installing nvim, from PPA"
 		sudo apt-get install software-properties-common
 		sudo add-apt-repository ppa:neovim-ppa/unstable
 		sudo apt-get update
 		sudo apt-get install neovim
 	else
+		echo "installing nvim-linux64 binary"
 		URL_NVIM=https://github.com/neovim/neovim/releases/download/v0.9.0/nvim-linux64.tar.gz
 		wget -O /tmp/nvim.tar.gz $URL_NVIM
-		tar --strip-components 1 -xvf nvim-linux64.tar.gz  -C ~/.local
+		tar --strip-components 1 -xvf nvim-linux64.tar.gz -C ~/.local
 		rm /tmp/nvim.tar.gz
 	fi
 fi
 
+if [[ -n ${LIGHT} ]]; then
+	echo "[*] setting plug.vim"
+	PLUG_DIR="${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim
+	if [[ ! -f ${PLUG_DIR} ]]; then
+		curl -fLo ${PLUG_DIR} --create-dirs \
+			https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	fi
+
+	echo "[*] installing deps"
+	npm i -g pyright
+
+	echo "[*] setting light config"
+	mv ~/.config/nvim ~/.config/nvim.bak
+	rm -rf ~/.local/share/nvim
+	rm -rf ~/.local/state/nvim
+	rm -rf ~/.cache/nvim
+
+	ln -fs ~/.dotfiles/nvim
+fi
+
+if [[ -n ${LAZY_VIM} ]] && [[ -z "$(grep lazy.nvim ~/.config/nvim/init.lua 2>/dev/null)" ]]; then
+
+	if [-f /etc/debian_version]; then
+		echo "[*] installing LazyVim deps"
+		sudo apt install build-essential unzip
+	fi
+
+	echo "[*] LazyVim setup"
+	mv ~/.config/nvim ~/.config/nvim.bak
+	rm -rf ~/.local/share/nvim
+	rm -rf ~/.local/state/nvim
+	rm -rf ~/.cache/nvim
+
+	git clone https://github.com/LazyVim/starter ~/.config/nvim
+	rm -rf ~/.config/nvim/.git
+fi
+
+echo "[*] setting sym link for vim/vi/editor/nano"
 NVIM_PATH=$(command -v nvim)
 if [ -e "$NVIM_PATH" ]; then
 	ln -fs $NVIM_PATH ~/.local/bin/vim
 	ln -fs $NVIM_PATH ~/.local/bin/editor
 	ln -fs $NVIM_PATH ~/.local/bin/vi
+	ln -fs $NVIM_PATH ~/.local/bin/nano
 fi
-
-mkdir -p ~/.config
-ln -fs ~/.dotfiles/nvim ~/.config/nvim
