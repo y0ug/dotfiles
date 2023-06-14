@@ -18,7 +18,7 @@ HOME="${HOME:-$(getent passwd $USER 2>/dev/null | cut -d: -f6)}"
 # macOS does not have getent, but this works even if $HOME is unset
 HOME="${HOME:-$(eval echo ~$USER)}"
 
-CHSH=${CHSH:-yes}
+CHSH=${CHSH:-no}
 KEEP_ZSHRC=${KEEP_ZSHRC:-yes}
 
 # OhMyZsh install script
@@ -51,6 +51,7 @@ else
 fi
 
 if [ ! -d ${HOME}/.oh-my-zsh/ ]; then
+  export CHSH KEEP_ZSHRC
 	RUNZSH=no sh -c "$(curl -fsSL ${omz_setup})" --unattended
 else
 	echo "[*] Updating OhMyZsh"
