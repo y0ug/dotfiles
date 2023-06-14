@@ -1,6 +1,11 @@
 #!/bin/sh
 set -e
 
+if [ "$SHELL" = "/bin/ash" ]; then
+  echo "[*] this script doesn't work inside ash" >&2
+  exit 1
+fi
+
 # Make sure important variables exist if not already defined
 #
 # $USER is defined by login(1) which is not always executed (e.g. containers)
@@ -49,7 +54,7 @@ if [ ! -d ${HOME}/.oh-my-zsh/ ]; then
 	RUNZSH=no sh -c "$(curl -fsSL ${omz_setup})" --unattended
 else
 	echo "[*] Updating OhMyZsh"
-	${HOME}/.oh-my-zsh/tools/upgrade.sh
+	zsh ${HOME}/.oh-my-zsh/tools/upgrade.sh
 fi
 
 for repo in "${repos[@]}"; do
