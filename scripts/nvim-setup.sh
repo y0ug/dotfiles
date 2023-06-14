@@ -1,46 +1,64 @@
-#!/bin/bash
+#!/bin/sh
+
 LAZY_VIM=1
 
-echo "[*] required folder exist"
+setup_nvm_node() {
+	echo "[*] installing NVM then node"
+	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | sh
+
+	export NVM_DIR="$HOME/.nvm"
+	. "$NVM_DIR/nvm.sh"          # This loads nvm
+	. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+	nvm install node
+}
+
+echo "[*] ensure required folder exist"
 mkdir -p ~/.local/bin/
 mkdir -p ~/.config
 
-if ! command -v node &>/dev/null; then
-	echo "[*] installing NVM then node"
-	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+if [ -f /etc/alpine-release ]; then
+	echo "[*] Alpine"
+	doas apk add neovim nodejs npm build-base
+elif [ -f /etc/lsb-release ] && grep -qi "DISTRIB_ID=ubuntu" /etc/lsb-release; then
+	echo "[*] Ubuntu"
+	echo "[*] installing nvim, from PPA"
+	sudo apt-get install software-properties-common
+	sudo add-apt-repository ppa:neovim-ppa/unstable
+	sudo apt-get update
+	sudo apt-get install curl neovim
+elif [ -f /etc/os-release ] && grep -qi "ID=debian" /etc/os-release; then
+	echo "[*] Debian"
+	sudo apt install curl build-essential unzip
 
-	export NVM_DIR="$HOME/.nvm"
-	[[ -s "$NVM_DIR/nvm.sh" ]] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-	[[ -s "$NVM_DIR/bash_completion" ]] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-	nvm install node
-fi
-
-if ! python3 -m venv -h &>/dev/null; then
-	echo "[*] installing python3 venv"
-	python3 -m pip install venv --user
-fi
-
-if ! command -v nvim &>/dev/null; then
-	if [[ -f /etc/lsb-release ]]; then
-		echo "[*] installing nvim, from PPA"
-		sudo apt-get install software-properties-common
-		sudo add-apt-repository ppa:neovim-ppa/unstable
-		sudo apt-get update
-		sudo apt-get install neovim
-	else
-		echo "installing nvim-linux64 binary"
+	echo "[*] installing nvim-linux64 binary"
+	if ! command -v nvim >/dev/null 2>&1; then
 		URL_NVIM=https://github.com/neovim/neovim/releases/download/v0.9.0/nvim-linux64.tar.gz
 		wget -O /tmp/nvim.tar.gz $URL_NVIM
 		tar --strip-components 1 -xvf nvim-linux64.tar.gz -C ~/.local
 		rm /tmp/nvim.tar.gz
 	fi
+elif [ "$(uname)" = "Darwin" ]; then
+	echo "[*] OSX"
+	brew install neovim
+else
+	echo "[*] Unsupported OS"
+	exit 1
 fi
 
-if [[ -n ${LIGHT} ]]; then
+if ! command -v node >/dev/null 2>&1; then
+	setup_nvm_node
+fi
+
+if ! python3 -m venv -h >/dev/null 2>&1; then
+	echo "[*] installing python3 venv"
+	python3 -m pip install venv --user
+fi
+
+if [ -n "${LIGHT}" ]; then
 	echo "[*] setting plug.vim"
 	PLUG_DIR="${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim
-	if [[ ! -f ${PLUG_DIR} ]]; then
-		curl -fLo ${PLUG_DIR} --create-dirs \
+	if [ ! -f "${PLUG_DIR}" ]; then
+		curl -fLo "${PLUG_DIR}" --create-dirs \
 			https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 	fi
 
@@ -56,13 +74,7 @@ if [[ -n ${LIGHT} ]]; then
 	ln -fs ~/.dotfiles/nvim
 fi
 
-if [[ -n ${LAZY_VIM} ]] && [[ -z "$(grep lazy.nvim ~/.config/nvim/init.lua 2>/dev/null)" ]]; then
-
-	if [ -f "/etc/debian_version" ]; then
-		echo "[*] installing LazyVim deps"
-		sudo apt install build-essential unzip
-	fi
-
+if [ -n "${LAZY_VIM}" ] && [ -z "$(grep lazy.nvim ~/.config/nvim/init.lua 2>/dev/null)" ]; then
 	echo "[*] LazyVim setup"
 	mv ~/.config/nvim ~/.config/nvim.bak
 	rm -rf ~/.local/share/nvim
@@ -76,8 +88,8 @@ fi
 echo "[*] setting sym link for vim/vi/editor/nano"
 NVIM_PATH=$(command -v nvim)
 if [ -e "$NVIM_PATH" ]; then
-	ln -fs $NVIM_PATH ~/.local/bin/vim
-	ln -fs $NVIM_PATH ~/.local/bin/editor
-	ln -fs $NVIM_PATH ~/.local/bin/vi
-	ln -fs $NVIM_PATH ~/.local/bin/nano
+	ln -fs "$NVIM_PATH" ~/.local/bin/vim
+	ln -fs "$NVIM_PATH" ~/.local/bin/editor
+	ln -fs "$NVIM_PATH" ~/.local/bin/vi
+	ln -fs "$NVIM_PATH" ~/.local/bin/nano
 fi

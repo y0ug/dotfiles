@@ -1,7 +1,7 @@
 #!/bin/sh
 MODE=default
-[ "${1}"  = "public" ] && MODE=${1}
-[ "${1}"  = "private" ] && MODE=${1}
+[ "${1}" = "public" ] && MODE=${1}
+[ "${1}" = "private" ] && MODE=${1}
 
 if [ "${MODE}" = "default" ] && [ -n "$(grep rick@levua "${HOME}/.ssh/id_rsa.pub" 2>/dev/null)" ]; then
 	MODE="private"
@@ -18,7 +18,7 @@ echo "Mode: ${MODE}"
 
 if [ -e /proc/sys/fs/binfmt_misc/WSLInterop ]; then
 	[ ! -e /usr/bin/keychain ] && sudo apt install keychain -y
-	[ -z $SSH_AUTH_SOCK ] && eval `keychain --eval --agents ssh id_rsa`
+	[ -z $SSH_AUTH_SOCK ] && eval $(keychain --eval --agents ssh id_rsa)
 	[ ! -e /usr/bin/zsh ] && sudo apt install zsh -y
 fi
 
@@ -54,8 +54,8 @@ if [ ! -e ${HOME}/.tmux/plugins/tpm ]; then
 	git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
 fi
 
-if [ ! -e ${HOME}/.oh-my-zsh/ ] && [ -e /usr/bin/zsh ]; then
-	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+if [ -e /usr/bin/zsh ]; then
+	${HOME}/.dotfiles/scripts/zsh-setup.sh
 fi
 
 ln -fs ${HOME}/.dotfiles/tmux.conf ${HOME}/.tmux.conf
@@ -65,7 +65,6 @@ ln -fs ${HOME}/.dotfiles/zshrc ${HOME}/.zshrc
 git config --global user.email "hca443@gmail.com"
 git config --global user.name "Hugo Caron"
 
-if [ -z "$(grep EDITOR ${HOME}/.profile)" ]
-then
-	echo "EDITOR=vim" >> ${HOME}/.profile
+if [ -z "$(grep EDITOR ${HOME}/.profile)" ]; then
+	echo "EDITOR=vim" >>${HOME}/.profile
 fi
