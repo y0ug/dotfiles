@@ -152,9 +152,14 @@ autocmd BufReadPost *
 
 "autocmd FileType yaml setlocal ts=2 sw=2 sts=0 expandtab
 "autocmd FileType yaml.ansible setlocal ts=2 sw=2 sts=0 expandtab
-autocmd Filetype python setlocal ts=4 sw=4 sts=0 expandtab
-autocmd Filetype javascript setlocal ts=4 sw=4 sts=0 expandtab
-autocmd FileType markdown setlocal spell
+autocmd Filetype python setlocal ts=4 sw=4 sts=0 expandtab smarttab
+autocmd Filetype javascript setlocal ts=4 sw=4 sts=0 expandtab smarttab
+autocmd FileType markdown setlocal spell ts=4 sw=4 sts=0 smarttab
+
+" Trim trailing whitespace for python
+autocmd BufWritePre *.py :%s/\s\+$//e 
+" gq to apply to selection
+au FileType python setlocal formatprg=autopep8\ -
 
 " insert mode ctrl-x ctrl-t
 set thesaurus+=~/.vim/thesaurus/mthesaur.txt
