@@ -1,7 +1,7 @@
 export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="alanpeabody"
-ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="false"
 
 zstyle ':omz:update' mode auto
 
@@ -14,9 +14,9 @@ zstyle ':omz:update' mode auto
 local_bin="${HOME}/.local/bin"
 [[ ":$PATH:" != *":$local_bin:"* ]] && [[ -d $local_bin ]] && PATH="$local_bin:$PATH"
 
+# zsh-autosuggestions
+# zsh-syntax-highlighting
 plugins=(git
-  zsh-autosuggestions
-  zsh-syntax-highlighting
   history-substring-search
   )
 
@@ -24,4 +24,6 @@ plugins=(git
 fpath+="${ZSH_CUSTOM:-"$ZSH/custom"}/plugins/zsh-completions/src"
 
 [[ -e $ZSH/oh-my-zsh.sh ]] && source $ZSH/oh-my-zsh.sh
+
+PROMPT='%F{cyan}%n%f@%F{green}%m:%F{yellow}%~%f$ '
 

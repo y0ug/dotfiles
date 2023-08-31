@@ -38,9 +38,13 @@ else
 
 	" Neoformat to use a project-local version of Prettier
 	let g:neoformat_try_node_exe = 1
-	autocmd BufWritePre,TextChanged *.js,*.jsx,*.ts,*.tsx Neoformat
-	autocmd BufWritePre,TextChanged *.md Neoformat
-	autocmd BufWritePre,TextChanged *.py Neoformat
+	let g:neoformat_try_formatprg = 1
+
+	" autocmd BufWritePre,TextChanged *.js,*.jsx,*.ts,*.tsx Neoformat
+	" autocmd BufWritePre,TextChanged *.md Neoformat
+	" autocmd BufWritePre,TextChanged *.py Neoformat
+
+	au FileType python setlocal formatprg=autopep8\ -
 
 	"colorscheme onedark 
 	lua <<EOF
@@ -48,8 +52,6 @@ require('vscode').load('dark')
 EOF
 
 endif
-
-
 
 " remap Esc to exit insert mode in :term
 tnoremap <Esc> <C-\><C-n>>

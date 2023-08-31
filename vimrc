@@ -150,11 +150,13 @@ autocmd BufReadPost *
 	\ |   exe "normal! g`\""
 	\ | endif
 
+autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
+
 "autocmd FileType yaml setlocal ts=2 sw=2 sts=0 expandtab
 "autocmd FileType yaml.ansible setlocal ts=2 sw=2 sts=0 expandtab
 autocmd Filetype python setlocal ts=4 sw=4 sts=0 expandtab smarttab
 autocmd Filetype javascript setlocal ts=4 sw=4 sts=0 expandtab smarttab
-autocmd FileType markdown setlocal spell ts=4 sw=4 sts=0 smarttab
+autocmd FileType markdown setlocal ts=4 sw=4 sts=0 smarttab " spell
 
 " Trim trailing whitespace for python
 autocmd BufWritePre *.py :%s/\s\+$//e 
