@@ -1,6 +1,7 @@
 #!/bin/sh
 
-LAZY_VIM=1
+LAZY_VIM=0
+LIGHT=1
 
 setup_nvm_node() {
 	echo "[*] installing NVM then node"
@@ -71,7 +72,7 @@ if [ -n "${LIGHT}" ]; then
 	rm -rf ~/.local/state/nvim
 	rm -rf ~/.cache/nvim
 
-	ln -fs ~/.dotfiles/nvim
+	ln -fs ~/.dotfiles/nvim  ~/.config/nvim
 fi
 
 if [ -n "${LAZY_VIM}" ] && [ -z "$(grep lazy.nvim ~/.config/nvim/init.lua 2>/dev/null)" ]; then
