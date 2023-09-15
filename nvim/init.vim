@@ -88,7 +88,7 @@ else
 	Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
 	Plug 'sbdchd/neoformat'
 
-	Plug 'github/copilot.vim'
+	" Plug 'github/copilot.vim'
 	call plug#end()
 
 	" Neoformat to use a project-local version of Prettier
@@ -100,14 +100,27 @@ else
 	" autocmd BufWritePre,TextChanged *.py Neoformat
 
 
-	"colorscheme onedark 
+	"colorscheme onedark
+	
+
 	lua <<EOF
 require('vscode').load('dark')
 require("mason").setup()
 -- require("mason-lspconfig").setup()
+
+if vim.fn.has("gui_running") then
+    vim.opt.guifont = "Source Code Pro:h16"
+end
 EOF
 
+
 endif
+
+" Enable copy-past with Ctrl-Shift x/c/v
+vnoremap <C-S-X> "+x
+vnoremap <C-S-C> "+y
+map <C-S-V> "+p
+cmap <C-S-V> <C-R>+ 
 
 " remap Esc to exit insert mode in :term
 tnoremap <Esc> <C-\><C-n>>
