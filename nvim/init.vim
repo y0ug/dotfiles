@@ -98,7 +98,9 @@ else
 	" autocmd BufWritePre,TextChanged *.js,*.jsx,*.ts,*.tsx Neoformat
 	" autocmd BufWritePre,TextChanged *.md Neoformat
 	" autocmd BufWritePre,TextChanged *.py Neoformat
-
+	
+	" Fix default comment
+	autocmd FileType c,cpp,java setlocal commentstring=//\ %s
 
 	"colorscheme onedark
 	
