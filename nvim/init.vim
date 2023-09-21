@@ -119,10 +119,13 @@ EOF
 endif
 
 " Enable copy-past with Ctrl-Shift x/c/v
-vnoremap <C-S-X> "+x
-vnoremap <C-S-C> "+y
-map <C-S-V> "+p
-cmap <C-S-V> <C-R>+ 
+vnoremap <C-S-x> "+x
+vnoremap <C-S-c> "+y
+map <C-S-v> "+p
+cmap <C-S-v> <C-R>+ 
+map <C-S-v> "+p
+" insert mode
+inoremap <C-S-v> <C-R>+
 
 " remap Esc to exit insert mode in :term
 tnoremap <Esc> <C-\><C-n>>
