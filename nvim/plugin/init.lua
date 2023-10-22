@@ -11,14 +11,24 @@ function stop_lsp()
 end
 
 local lspconfig = require('lspconfig')
-lspconfig.pyright.setup {}
-lspconfig.tsserver.setup {}
-lspconfig.rust_analyzer.setup {
+local coq = require "coq" 
+vim.cmd('COQnow --shut-up')
+
+lspconfig.pyright.setup (coq.lsp_ensure_capabilities( {
+	settings = {
+		pyright = {
+			disableLanguageServices = false,
+			analysis = { autoImportCompletions = true}
+		},
+	},
+}))
+lspconfig.tsserver.setup(coq.lsp_ensure_capabilities( {} ))
+lspconfig.rust_analyzer.setup(coq.lsp_ensure_capabilities({
   -- Server-specific settings. See `:help lspconfig-setup`
   settings = {
     ['rust-analyzer'] = {},
   },
-}
+}))
 lspconfig.ltex.setup {
   on_attach = on_attach,
   cmd = { "ltex-ls" },

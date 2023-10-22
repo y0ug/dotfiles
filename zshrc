@@ -23,8 +23,12 @@ local_bin="${HOME}/.local/bin"
 # zsh-syntax-highlighting
 plugins=(git
   #history-substring-search
-  zsh-vi-mode
+  #zsh-vi-mode
   )
+
+alias vim=nvim
+alias vi=nvim
+alias nano=nvim
 
 # Load OMZ
 fpath+="${ZSH_CUSTOM:-"$ZSH/custom"}/plugins/zsh-completions/src"
@@ -32,3 +36,5 @@ fpath+="${ZSH_CUSTOM:-"$ZSH/custom"}/plugins/zsh-completions/src"
 [[ -e $ZSH/oh-my-zsh.sh ]] && source $ZSH/oh-my-zsh.sh
 
 PROMPT='%F{cyan}%n%f@%F{green}%m:%F{yellow}%~%f$ '
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

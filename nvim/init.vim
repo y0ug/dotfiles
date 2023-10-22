@@ -70,29 +70,41 @@ if exists('g:vscode')
 else
 	" ordinary Neovim
 	call plug#begin()
+
+	" Theme
 	Plug 'gosukiwi/vim-atom-dark'
 	Plug 'joshdick/onedark.vim'
 	"Plug 'tomasiser/vim-code-dark'
 	Plug 'Mofiqul/vscode.nvim'
 
-
 	Plug 'tpope/vim-surround'
 	Plug 'tpope/vim-commentary'
-
+	
+	" LSP stuff
 	Plug 'williamboman/mason.nvim'
 	" Plug 'williamboman/mason-lspconfig.nvim'
 	Plug 'neovim/nvim-lspconfig'
 
 	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-	Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
-	Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
 	Plug 'sbdchd/neoformat'
 
+	" COQNow COQDeps 
+	Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+	Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
+
+	" need for telescope
+	Plug 'nvim-lua/plenary.nvim'
+	Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.4' }
+
+	" To take note ,ww
+	Plug 'vimwiki/vimwiki'
+
 	" Plug 'github/copilot.vim'
+
 	call plug#end()
 
 	" Neoformat to use a project-local version of Prettier
-	let g:neoformat_try_node_exe = 1
+	let g:neoformat_try_node_exe = 0
 	let g:neoformat_try_formatprg = 1
 
 	" autocmd BufWritePre,TextChanged *.js,*.jsx,*.ts,*.tsx Neoformat
@@ -104,6 +116,11 @@ else
 
 	"colorscheme onedark
 	
+	" Find files using Telescope command-line sugar.
+	nnoremap <leader>ff <cmd>Telescope find_files<cr>
+	nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+	nnoremap <leader>fb <cmd>Telescope buffers<cr>
+	nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 	lua <<EOF
 require('vscode').load('dark')
@@ -134,7 +151,9 @@ tnoremap <Esc> <C-\><C-n>>
 map <leader>n :nohlsearch<cr>
 
 " Quick buffer switch
-nmap <leader><tab> :b#<CR>
+" nmap <leader><tab> :b#<CR>
+nmap <leader><shift><tab> :bp<CR>
+nmap <leader><tab> :bn<CR>
 
 " Relative number
 set number relativenumber
@@ -157,7 +176,8 @@ map <Leader>w :w<CR>
 imap <Leader>w <ESC>:w<CR>
 vmap <Leader>w <ESC><ESC>:w<CR>
 
-map <Leader>q :q<CR>
+" map <Leader>q :q<CR>
+map <Leader>q :bd<CR>
 map <Leader>W :wq<CR>
 
 " :W sudo saves the file

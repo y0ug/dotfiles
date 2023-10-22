@@ -11,12 +11,25 @@ fi
 
 echo "Mode: ${MODE}"
 
-[ ! -e /usr/bin/git ] && sudo apt install git -y
-[ ! -e /usr/bin/curl ] && sudo apt install curl -y
-[ ! -e /usr/bin/vim ] && sudo apt install vim -y
-#[ ! -e /usr/bin/zsh ] && sudo apt install zsh -y
+if [ -f /etc/alpine-release ]; then
+	echo "[*] Alpine"
+	doas apk add vim curl git
+elif [ -f /etc/lsb-release ] && grep -qi "DISTRIB_ID=ubuntu" /etc/lsb-release; then
+	echo "[*] Ubuntu"
+	sudo apt install curl git vim -y
+elif [ -f /etc/os-release ] && grep -qi "ID=debian" /etc/os-release; then
+	echo "[*] Debian"
+	sudo apt install curl git vim -y
+elif [ "$(uname)" = "Darwin" ]; then
+	echo "[*] OSX"
+	#brew install
+else
+	echo "[*] Unsupported OS"
+	exit 1
+fi
 
 if [ -e /proc/sys/fs/binfmt_misc/WSLInterop ]; then
+	echo "[*] WSL detected"
 	[ ! -e /usr/bin/keychain ] && sudo apt install keychain -y
 	[ -z $SSH_AUTH_SOCK ] && eval $(keychain --eval --agents ssh id_rsa)
 	[ ! -e /usr/bin/zsh ] && sudo apt install zsh -y
