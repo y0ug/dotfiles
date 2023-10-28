@@ -86,7 +86,9 @@ else
 	Plug 'neovim/nvim-lspconfig'
 
 	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-	Plug 'sbdchd/neoformat'
+
+	" Plug 'sbdchd/neoformat'
+	Plug 'stevearc/conform.nvim'
 
 	" COQNow COQDeps 
 	Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
@@ -104,8 +106,8 @@ else
 	call plug#end()
 
 	" Neoformat to use a project-local version of Prettier
-	let g:neoformat_try_node_exe = 0
-	let g:neoformat_try_formatprg = 1
+	" let g:neoformat_try_node_exe = 0
+	" let g:neoformat_try_formatprg = 1
 
 	" autocmd BufWritePre,TextChanged *.js,*.jsx,*.ts,*.tsx Neoformat
 	" autocmd BufWritePre,TextChanged *.md Neoformat
@@ -151,9 +153,8 @@ tnoremap <Esc> <C-\><C-n>>
 map <leader>n :nohlsearch<cr>
 
 " Quick buffer switch
-" nmap <leader><tab> :b#<CR>
-nmap <leader><shift><tab> :bp<CR>
-nmap <leader><tab> :bn<CR>
+" nmap <leader><shift><tab> :bp<CR>
+nmap <leader><tab> :b#<CR>
 
 " Relative number
 set number relativenumber
