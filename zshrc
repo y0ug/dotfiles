@@ -1,5 +1,5 @@
-[[ -e /etc/profile ]] && emulate bash -c 'source /etc/profile'
-[[ -e ~/.profile ]] && emulate bash -c 'source ~/.profile'
+[[ -e /etc/profile ]] && source /etc/profile
+[[ -e ~/.profile ]] && source ~/.profile
 
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -16,7 +16,11 @@ fpath+="${ZSH_CUSTOM:-"$ZSH/custom"}/plugins/zsh-completions/src"
 
 PROMPT='%F{cyan}%n%f@%F{green}%m:%F{yellow}%~%f$ '
 
+
 if type brew &>/dev/null
 then
 	fpath+="$(brew --prefix)/share/zsh/site-functions"
 fi
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+
+eval "$(starship init zsh)"

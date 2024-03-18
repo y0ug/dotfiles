@@ -45,8 +45,8 @@
 
 set nocompatible
 
-let mapleader = ","
-let g:mapleader = ","
+let mapleader = " "
+let g:mapleader = " "
 
 syntax enable
 filetype plugin on
@@ -64,14 +64,8 @@ set number relativenumber
 runtime ftplugin/man.vim
 
 call plug#begin('~/.vim/plugged')
-Plug 'crusoexia/vim-monokai'
-Plug 'rakr/vim-one'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'sheerun/vim-polyglot'
-"Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
-"Plug 'pearofducks/ansible-vim'
-"Plug 'isobit/vim-caddyfile'
-"Plug 'w0rp/ale'
 Plug 'tpope/vim-commentary'
 Plug 'tomasiser/vim-code-dark'
 call plug#end()
@@ -98,7 +92,6 @@ set path+=**
 
 " Display all matching files when we tab complete
 set wildmenu
-
 " Global undo folder
 if has('persistent_undo')
 	silent !mkdir -p $HOME/.vim/undo
@@ -114,25 +107,25 @@ endif
 " Clear search hl
 map <leader>n :nohlsearch<cr>
 
-" Update tags
-command! MakeTags !ctags -R .
-
 " Quick buffer switch
-nmap <leader><tab> :b#<CR>
+nmap <leader>bb :b#<CR>
+nmap <leader>` :b#<CR>
+
+nmap <S-H>bp :bp<CR>
+nmap <S-L>bn :bn<CR>
+nmap <leader>bp :bp<CR>
+nmap <leader>bn :bn<CR>
+nmap <leader>bd :bd<CR>
+nmap <leader>bl :buffers<CR>
 
 " Allow to switch buffer without saving
 set hidden
 
-" Paste
-map <leader>pp :setlocal paste!<cr>
-
 " Fast saving
-map <Leader>w :w<CR>
-imap <Leader>w <ESC>:w<CR>
-vmap <Leader>w <ESC><ESC>:w<CR>
+map <C-S> :w<CR>
+imap <C-S> <ESC>:w<CR>
+vmap <C-S> <ESC><ESC>:w<CR>
 
-map <Leader>q :q<CR>
-map <Leader>W :wq<CR>
 
 " :W sudo saves the file
 command! W w !sudo tee % > /dev/null
@@ -150,22 +143,19 @@ autocmd BufReadPost *
 	\ |   exe "normal! g`\""
 	\ | endif
 
-autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
+"autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
 
 "autocmd FileType yaml setlocal ts=2 sw=2 sts=0 expandtab
 "autocmd FileType yaml.ansible setlocal ts=2 sw=2 sts=0 expandtab
-autocmd Filetype python setlocal ts=4 sw=4 sts=0 expandtab smarttab
-autocmd Filetype javascript setlocal ts=4 sw=4 sts=0 expandtab smarttab
-autocmd FileType markdown setlocal ts=4 sw=4 sts=0 smarttab " spell
+"autocmd Filetype python setlocal ts=4 sw=4 sts=0 expandtab smarttab
+"autocmd Filetype javascript setlocal ts=4 sw=4 sts=0 expandtab smarttab
+"autocmd FileType markdown setlocal ts=4 sw=4 sts=0 smarttab " spell
 
 " Trim trailing whitespace for python
 autocmd BufWritePre *.py :%s/\s\+$//e 
 " gq to apply to selection
-au FileType python setlocal formatprg=autopep8\ -
+"au FileType python setlocal formatprg=autopep8\ -
 
 " insert mode ctrl-x ctrl-t
 set thesaurus+=~/.vim/thesaurus/mthesaur.txt
 
-" Slow mode for markdownpreview
-let g:mkdp_refresh_slow=1
-let g:vim_markdown_folding_disabled = 1
