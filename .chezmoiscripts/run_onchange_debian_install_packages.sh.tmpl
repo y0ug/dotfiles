@@ -1,0 +1,6 @@
+#!/bin/bash
+{{- if eq .chezmoi.osRelease.id "debian" }}
+{{ range .packages.debian.apt -}}
+sudo apt install -y {{ . | quote }}
+{{ end -}}
+{{ end -}}

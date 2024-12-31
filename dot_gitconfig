@@ -1,0 +1,6 @@
+[init]
+  defaultBranch = main
+
+[user]
+	email = hca443@gmail.com
+	name = Hugo Caron

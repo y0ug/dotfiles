@@ -1,0 +1,6 @@
+# Set ZSH_ENV based on CHEZMOI_MODE if present
+if [[ -n "${CHEZMOI_MODE}" ]]; then
+    export ZSH_ENV="${CHEZMOI_MODE}"
+else
+    export ZSH_ENV="light"  # Default mode
+fi

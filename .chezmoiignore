@@ -1,0 +1,9 @@
+key.txt.age
+lazy-lock.json
+
+
+{{- if not .is_home }}
+.ssh/id_ed25519
+.ssh/id_rsa
+.ssh/deploymazenet_id_ed25519
+{{- end }}

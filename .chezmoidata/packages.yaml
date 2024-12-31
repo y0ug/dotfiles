@@ -1,0 +1,7 @@
+packages:
+  debian:
+    apt:
+      - tmux
+      - zsh
+      - curl
+      - git

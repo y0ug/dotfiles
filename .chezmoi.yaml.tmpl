@@ -1,0 +1,10 @@
+data:
+  mode: {{ $mode := env "CHEZMOI_MODE" | default "min" }} {{ $mode }}
+  is_min: {{ eq $mode "min" }}
+  is_work: {{ eq $mode "work" }}
+  is_home: {{ eq $mode "home" }}
+
+encryption: age
+age:
+  identity: ~/.config/chezmoi/key.txt
+  recipient: age1sv8vrs48ek43daltktf3v2m37te0kazv6wwc99dfuf9gvpwq0qyqe7adrf
