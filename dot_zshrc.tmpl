@@ -107,7 +107,11 @@ zinit wait lucid for \
   jesseduffield/lazygit
 
 zinit wait lucid for \
-  atinit"zstyle :omz:plugins:ssh-agent identities id_ed25519" OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh
+  atinit"zstyle :omz:plugins:ssh-agent identities id_ed25519" OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh \
+  OMZ::lib/clipboard.zsh \
+  OMZ::lib/history.zsh \
+  OMZ::plugins/vscode/vscode.plugin.zsh
+
 
 {{ else }}
   # light config
