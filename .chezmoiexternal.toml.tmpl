@@ -32,4 +32,13 @@
   type = "git-repo"
   url = "https://github.com/zdharma-continuum/zinit.git"
   refreshPeriod = "168h"
+
+{{- if .is_home }}
+[".local/bin/bw"]
+    type = "archive-file"
+    url = "https://vault.bitwarden.com/download/?app=cli&platform={{ .chezmoi.os }}"
+    path = "bw"
+    executable = true
+    refreshPeriod = "168h"
+{{- end }}
 {{- end }}
