@@ -42,15 +42,16 @@ zinit wait lucid light-mode for \
       zsh-users/zsh-autosuggestions \
   blockf atpull'zinit creinstall -q .' \
       zsh-users/zsh-completions \
-  atclone"dircolors -b LS_COLORS > clrs.zsh" \
-    atpull'%atclone' pick"clrs.zsh" nocompile'!' \
-    atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”' \
-    trapd00r/LS_COLORS \
   jeffreytse/zsh-vi-mode
 
-zinit wait lucid light-mode for 'OMZ::lib/theme-and-appearance.zsh' \
-      zdharma-continuum/history-search-multi-word
+  # atclone"dircolors -b LS_COLORS > clrs.zsh" \
+  #   atpull'%atclone' pick"clrs.zsh" nocompile'!' \
+  #   atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”' \
+  #   trapd00r/LS_COLORS \
+zinit pack for ls_colors
 
+zinit wait lucid light-mode for zdharma-continuum/history-search-multi-word
+#'OMZ::lib/theme-and-appearance.zsh' \
 
 zinit light zdharma-continuum/zinit-annex-bin-gem-node
 # patch-dl is need for fzf bgn-binary
@@ -95,10 +96,44 @@ zinit wait lucid light-mode nocompile run-atpull atpull"%atclone" for \
 # eval "$(starship init zsh)"
 
 zinit wait lucid for \
-    bpick'kubectx;kubens' \
+    pick'kubectx;kubens' \
     from'gh-r' \
     sbin'kubectx;kubens'  \
   ahmetb/kubectx
+
+zinit wait lucid light-mode for \
+  as="program" from"gh-r" sbin"./eza" \
+  dl="https://raw.githubusercontent.com/eza-community/eza/main/completions/zsh/_eza -> _eza" \
+  atload"alias la='eza --all --git --color=auto'
+      alias ls='eza --git --color=auto'
+      alias ll='eza --long --all --git --color=auto'" \
+  eza-community/eza 
+
+zinit wait light-mode lucid blockf for \
+  as="program" from="gh-r" \
+    sbin="./fd-*/fd" \
+    cp="./fd-*/fd.1 -> ${ZINIT[MAN_DIR]}/man1/fd.1" \
+    @sharkdp/fd
+
+zinit wait light-mode lucid blockf for \
+  as="program" from="gh-r" \
+    sbin="./bat-*/bat" \
+    cp="./bat-*/bat.1 -> ${ZINIT[MAN_DIR]}/man1/bat.1" \
+    mv="./bat-*/autocomplete/bat.zsh -> _bat" \
+    @sharkdp/bat \
+    fdellwing/zsh-bat 
+
+zinit wait light-mode lucid blockf for \
+  as="program" from="gh-r" \
+    sbin="./ripgrep-*/rg" \
+    cp="./ripgrep-*/doc/rg.1 -> ${ZINIT[MAN_DIR]}/man1/rg.1" \
+    @BurntSushi/ripgrep
+
+zinit wait light-mode lucid blockf for \
+  as="program" from="gh-r" \
+    sbin="./hexyl-*/hexyl" \
+    cp="./hexyl-*/hexyl.1 -> ${ZINIT[MAN_DIR]}/man1/hexyl.1" \
+    @sharkdp/hexyl
 
 zinit wait lucid for \
     from'gh-r' \
@@ -108,9 +143,14 @@ zinit wait lucid for \
 zinit wait lucid for \
   atinit"zstyle :omz:plugins:ssh-agent identities id_ed25519" OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh \
   OMZ::lib/clipboard.zsh \
-  OMZ::lib/history.zsh \
-  OMZ::plugins/vscode/vscode.plugin.zsh
+  OMZ::lib/history.zsh 
+  # OMZ::plugins/vscode/vscode.plugin.zsh
 
+#### VSCode integration
+if [[ $(command -v code) ]]; then
+  zinit is-snippet lucid if='[[ "${TERM_PROGRAM}" == "vscode" ]]' for \
+    "$(code --locate-shell-integration-path zsh)"
+fi
 
 {{ else }}
   # light config
