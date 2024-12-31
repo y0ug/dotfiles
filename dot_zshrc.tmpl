@@ -45,11 +45,10 @@ zinit wait lucid light-mode for \
   atclone"dircolors -b LS_COLORS > clrs.zsh" \
     atpull'%atclone' pick"clrs.zsh" nocompile'!' \
     atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”' \
-    trapd00r/LS_COLORS
+    trapd00r/LS_COLORS \
+  jeffreytse/zsh-vi-mode
 
-zinit wait lucid light-mode for 'OMZ::lib/theme-and-appearance.zsh'
-
-zinit wait lucid light-mode for \
+zinit wait lucid light-mode for 'OMZ::lib/theme-and-appearance.zsh' \
       zdharma-continuum/history-search-multi-word
 
 
