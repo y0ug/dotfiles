@@ -33,6 +33,8 @@ source "${ZINIT_HOME}/zinit.zsh"
 zi ice pick"async.zsh" src"pure.zsh"
 zi light sindresorhus/pure
 
+zinit light zdharma-continuum/zinit-annex-bin-gem-node
+
 #
 # Load core plugins with zinit
 zinit wait lucid light-mode for \
@@ -44,6 +46,13 @@ zinit wait lucid light-mode for \
       zsh-users/zsh-completions \
   jeffreytse/zsh-vi-mode
 
+# jq is required for zinit-annex-patch-dl
+zinit wait lucid light-mode for \
+    from'gh-r' \
+    sbin'* -> jq' \
+    nocompile \
+  @jqlang/jq
+
   # atclone"dircolors -b LS_COLORS > clrs.zsh" \
   #   atpull'%atclone' pick"clrs.zsh" nocompile'!' \
   #   atload'zstyle ":completion:*" list-colors “${(s.:.)LS_COLORS}”' \
@@ -53,7 +62,6 @@ zinit pack for ls_colors
 zinit wait lucid light-mode for zdharma-continuum/history-search-multi-word
 #'OMZ::lib/theme-and-appearance.zsh' \
 
-zinit light zdharma-continuum/zinit-annex-bin-gem-node
 # patch-dl is need for fzf bgn-binary
 zinit light zdharma-continuum/zinit-annex-patch-dl
 
@@ -79,8 +87,8 @@ zinit wait lucid light-mode nocompile run-atpull atpull"%atclone" as"completion"
   has"bw" id-as"bw-completion" atclone"bw completion --shell zsh > _bw" src"_bw"  @zdharma-continuum/null 
 
 zinit wait lucid light-mode nocompile run-atpull atpull"%atclone" for \
-  id-as"brew-shellenv" if"[[ -v HOMEBREW_PREFIX ]]" atclone"$HOMEBREW_PREFIX/bin/brew shellenv > brew-env.sh" pick"brew-env.sh" @zdharma-continuum/null \
   has"scw" id-as"scw-completion" atclone"scw autocomplete script > scw.sh" pick"scw.sh" @zdharma-continuum/null 
+  # id-as"brew-shellenv" if"[[ -v HOMEBREW_PREFIX ]]" atclone"$HOMEBREW_PREFIX/bin/brew shellenv > brew-env.sh" pick"brew-env.sh" @zdharma-continuum/null \
   # id-as"conda-env" if"[[ -v CONDA_PREFIX ]]" atclone"$CONDA_PREFIX/bin/conda shell.zsh hook > conda-env.sh" pick"conda-env.sh" @zdharma-continuum/null \
 
 {{ if .is_work }}
@@ -125,7 +133,7 @@ zinit wait light-mode lucid blockf for \
 
 zinit wait light-mode lucid blockf for \
   as="program" from="gh-r" \
-    sbin="./ripgrep-*/rg" \
+    sbin'**/rg -> rg' \
     cp="./ripgrep-*/doc/rg.1 -> ${ZINIT[MAN_DIR]}/man1/rg.1" \
     @BurntSushi/ripgrep
 
@@ -151,6 +159,34 @@ if [[ $(command -v code) ]]; then
   zinit is-snippet lucid if='[[ "${TERM_PROGRAM}" == "vscode" ]]' for \
     "$(code --locate-shell-integration-path zsh)"
 fi
+
+zinit wait lucid for \
+    from'gh-r'  \
+    sbin'**/glow' \
+  charmbracelet/glow
+
+zinit for \
+    from'gh-r' \
+    sbin'**/gh' \
+  cli/cli
+
+zinit for @brimdata/zed
+# zinit for @ducaale/xh
+
+zinit wait lucid for \
+    as'null' \
+    atclone'%atpull' \
+    atpull'
+         ./bin/brew update --preinstall \
+      && ln -sf $PWD/completions/zsh/_brew $ZINIT[COMPLETIONS_DIR] \
+      && rm -f brew.zsh \
+      && ./bin/brew shellenv --dummy-arg > brew.zsh \
+      && zcompile brew.zsh' \
+    depth'3' \
+    nocompletions \
+    sbin'bin/brew' \
+    src'brew.zsh' \
+  homebrew/brew
 
 {{ else }}
   # light config
