@@ -2,23 +2,31 @@
 [[ -e /etc/profile ]] && source /etc/profile
 [[ -e ~/.profile ]] && source ~/.profile 
 
-: ${ZSH_ENV:=min}
+if [[ -d "$HOME/.nix-profile/share/zsh/site-functions/" ]]; then
+  fpath+="$HOME/.nix-profile/share/zsh/site-functions/" 
+fi
 
 # History
 HISTFILE=~/.zsh_history
 
-# Number of history entries
-HISTSIZE=100000
-SAVEHIST=100000
+# Enable additional glob operators. (Globbing = pattern matching)
+# https://zsh.sourceforge.io/Doc/Release/Expansion.html#Filename-Generation
+setopt EXTENDED_GLOB
 
-# History options
-setopt APPEND_HISTORY           # Append to the history file, don't overwrite
-setopt SHARE_HISTORY            # Share history across all sessions
-setopt INC_APPEND_HISTORY       # Incrementally append to the history file
-setopt HIST_IGNORE_ALL_DUPS     # Ignore duplicated commands in history
-setopt HIST_FIND_NO_DUPS        # Avoid duplicates when searching history
-setopt HIST_REDUCE_BLANKS       # Remove superfluous blanks from each command
-setopt HIST_VERIFY              # Show the command with history expansion applied before executing
+# Max number of entries to keep in history file.
+SAVEHIST=$(( 100 * 1000 ))      # Use multiplication for readability.
+
+# Max number of history entries to keep in memory.
+HISTSIZE=$(( 1.2 * SAVEHIST ))  # Zsh recommended value
+
+# Use modern file-locking mechanisms, for better safety & performance.
+setopt HIST_FCNTL_LOCK
+
+# Keep only the most recent copy of each duplicate entry in history.
+setopt HIST_IGNORE_ALL_DUPS
+
+# Auto-sync history between concurrent sessions.
+setopt SHARE_HISTORY
 
 # Install zinit if not installed
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
@@ -45,6 +53,11 @@ zinit wait lucid light-mode for \
   blockf atpull'zinit creinstall -q .' \
       zsh-users/zsh-completions \
   jeffreytse/zsh-vi-mode
+
+zinit wait lucid light-mode for \
+  nix-community/nix-zsh-completions 
+  # is-snippet if"[[ -d \"$HOME/.nix-profile\" ]]" as=completion blockf \
+  #   ~/.nix-profile/share/zsh/site-functions/
 
 # jq is required for zinit-annex-patch-dl
 zinit wait lucid light-mode for \
@@ -87,22 +100,13 @@ zinit wait lucid light-mode nocompile run-atpull atpull"%atclone" as"completion"
   has"bw" id-as"bw-completion" atclone"bw completion --shell zsh > _bw" src"_bw"  @zdharma-continuum/null 
 
 zinit wait lucid light-mode nocompile run-atpull atpull"%atclone" for \
-  has"scw" id-as"scw-completion" atclone"scw autocomplete script > scw.sh" pick"scw.sh" @zdharma-continuum/null 
-  # id-as"brew-shellenv" if"[[ -v HOMEBREW_PREFIX ]]" atclone"$HOMEBREW_PREFIX/bin/brew shellenv > brew-env.sh" pick"brew-env.sh" @zdharma-continuum/null \
+  has"scw" id-as"scw-completion" atclone"scw autocomplete script > scw.sh" pick"scw.sh" @zdharma-continuum/null \
+  id-as"brew-shellenv" if"[[ -v HOMEBREW_PREFIX ]]" atclone"$HOMEBREW_PREFIX/bin/brew shellenv > brew-env.sh" pick"brew-env.sh" @zdharma-continuum/null 
   # id-as"conda-env" if"[[ -v CONDA_PREFIX ]]" atclone"$CONDA_PREFIX/bin/conda shell.zsh hook > conda-env.sh" pick"conda-env.sh" @zdharma-continuum/null \
 
 {{ if .is_work }}
   # work config
 {{ else if .is_home }}
-  # home config
-  
-# Load starship
-# zinit ice wait sbin="starship" from"gh-r" \
-#           atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
-#           atpull"%atclone" src"init.zsh" \
-# zinit light starship/starship
-# eval "$(starship init zsh)"
-
 # kubectx/kubens
 # helm
 # helmfile
@@ -121,54 +125,9 @@ zinit wait lucid light-mode nocompile run-atpull atpull"%atclone" for \
 # nvim
 
 zinit wait lucid for \
-    pick'kubectx;kubens' \
-    from'gh-r' \
-    sbin'kubectx;kubens'  \
-  ahmetb/kubectx
-
-zinit wait lucid light-mode for \
-  as="program" from"gh-r" sbin"./eza" \
-  dl="https://raw.githubusercontent.com/eza-community/eza/main/completions/zsh/_eza -> _eza" \
-  atload"alias la='eza --all --git --color=auto'
-      alias ls='eza --git --color=auto'
-      alias ll='eza --long --all --git --color=auto'" \
-  eza-community/eza 
-
-zinit wait light-mode lucid blockf for \
-  as="program" from="gh-r" \
-    sbin="./fd-*/fd" \
-    cp="./fd-*/fd.1 -> ${ZINIT[MAN_DIR]}/man1/fd.1" \
-    @sharkdp/fd
-
-zinit wait light-mode lucid blockf for \
-  as="program" from="gh-r" \
-    sbin="./bat-*/bat" \
-    cp="./bat-*/bat.1 -> ${ZINIT[MAN_DIR]}/man1/bat.1" \
-    mv="./bat-*/autocomplete/bat.zsh -> _bat" \
-    @sharkdp/bat \
-    fdellwing/zsh-bat 
-
-zinit wait light-mode lucid blockf for \
-  as="program" from="gh-r" \
-    sbin'**/rg -> rg' \
-    cp="./ripgrep-*/doc/rg.1 -> ${ZINIT[MAN_DIR]}/man1/rg.1" \
-    @BurntSushi/ripgrep
-
-zinit wait light-mode lucid blockf for \
-  as="program" from="gh-r" \
-    sbin="./hexyl-*/hexyl" \
-    cp="./hexyl-*/hexyl.1 -> ${ZINIT[MAN_DIR]}/man1/hexyl.1" \
-    @sharkdp/hexyl
-
-zinit wait lucid for \
-    from'gh-r' \
-    sbin'**/lazygit' \
-  jesseduffield/lazygit
-
-zinit wait lucid for \
-  atinit"zstyle :omz:plugins:ssh-agent identities id_ed25519" OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh \
-  OMZ::lib/clipboard.zsh \
-  OMZ::lib/history.zsh 
+  atinit"zstyle :omz:plugins:ssh-agent identities id_ed25519" OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh 
+  # OMZ::lib/clipboard.zsh \
+  # OMZ::lib/history.zsh 
   # OMZ::plugins/vscode/vscode.plugin.zsh
 
 #### VSCode integration
@@ -176,34 +135,6 @@ if [[ $(command -v code) ]]; then
   zinit is-snippet lucid if='[[ "${TERM_PROGRAM}" == "vscode" ]]' for \
     "$(code --locate-shell-integration-path zsh)"
 fi
-
-zinit wait lucid for \
-    from'gh-r'  \
-    sbin'**/glow' \
-  charmbracelet/glow
-
-zinit for \
-    from'gh-r' \
-    sbin'**/gh' \
-  cli/cli
-
-zinit for @brimdata/zed
-# zinit for @ducaale/xh
-
-zinit wait lucid for \
-    as'null' \
-    atclone'%atpull' \
-    atpull'
-         ./bin/brew update --preinstall \
-      && ln -sf $PWD/completions/zsh/_brew $ZINIT[COMPLETIONS_DIR] \
-      && rm -f brew.zsh \
-      && ./bin/brew shellenv --dummy-arg > brew.zsh \
-      && zcompile brew.zsh' \
-    depth'3' \
-    nocompletions \
-    sbin'bin/brew' \
-    src'brew.zsh' \
-  homebrew/brew
 
 {{ else }}
   # light config
