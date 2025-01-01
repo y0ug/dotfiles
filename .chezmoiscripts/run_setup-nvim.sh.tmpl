@@ -4,7 +4,7 @@ source {{ .chezmoi.sourceDir }}/.helper.sh
 # This script is used to setup neovim.
 
 {{/* AppImages only run on Linux */}}
-{{ if eq .chezmoi.os "linux" }}
+{{ if eq .chezmoi.os "linux2" }}
 
 APPIMAGE_LINK="https://github.com/neovim/neovim/releases/latest/download/nvim.appimage"
 CURL_CMD="curl -s -L ${APPIMAGE_LINK}"
@@ -33,7 +33,7 @@ ${CURL_CMD} -o nvim.appimage && chmod +x nvim.appimage
 
 ln -sf ${TARGET_DIR}/AppRun ${HOME}/.local/bin/nvim
 
-sha256sum nvim.appimage > ${TARGET_DIR}/nvim.appimage.sha256
+sha256sum nvim.appimage >${TARGET_DIR}/nvim.appimage.sha256
 
 popd
 
@@ -42,17 +42,17 @@ popd
 find_brew
 
 if [ ! -z "${BREW_PATH}" ]; then
-    eval "$(${BREW_PATH} shellenv)"
-    export HOMEBREW_NO_AUTO_UPDATE=1
-    if brew list neovim &> /dev/null; then
-      print_message "Neovim is already installed."
-    else
-      brew install neovim
-    fi
+  eval "$(${BREW_PATH} shellenv)"
+  export HOMEBREW_NO_AUTO_UPDATE=1
+  if brew list neovim &>/dev/null; then
+    print_message "Neovim is already installed."
+  else
+    brew install neovim
+  fi
 
-    if [ $? -ne "0" ]; then
-        print_error "Couldn't install Neovim!"
-        exit 1
-    fi
+  if [ $? -ne "0" ]; then
+    print_error "Couldn't install Neovim!"
+    exit 1
+  fi
 fi
 {{ end }}
