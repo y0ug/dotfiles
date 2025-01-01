@@ -40,5 +40,72 @@
     path = "bw"
     executable = true
     refreshPeriod = "168h"
+
+
+
+## https://github.com/starship/starship
+##
+{{ $starship_version := "v1.21.1" }}
+{{ $build := "musl" }}
+{{ $arch := "x86_64" }}
+{{ if (eq .chezmoi.osRelease.id "alpine") }}
+{{    $build = "musl" }}
+{{ end }}
+{{ if (eq .chezmoi.arch "arm64") }}
+{{    $arch = "aarch64" }}
+{{ end }}
+{{ $starship_package := (printf "starship-%s-unknown-linux-%s.tar.gz" $arch $build) -}}
+{{ $starship_url := (printf "https://github.com/starship/starship/releases/download/%s/%s" $starship_version $starship_package) -}}
+["starship"]
+type = "archive"
+url = {{ $starship_url | quote }}
+extract = true
+refresh_period = "168h"
+
+## https://github.com/eza-community/eza
+##
+{{ $eza_version := "v0.20.14"}}
+{{ $eza_package := (printf "eza_x86_64-unknown-linux-musl.zip") }}
+{{ $eza_url := (printf "https://github.com/eza-community/eza/releases/download/%s/%s" $eza_version $eza_package) }}
+["eza"]
+type = "archive"
+url = {{ $eza_url | quote }}
+extract = true
+refresh_period = "168h"
+
+
+## https://github.com/BurntSushi/ripgrep
+##
+{{ $rg_version := "14.1.1"}}
+{{ $rg_package := (printf "ripgrep-%s-x86_64-unknown-linux-musl.tar.gz" $rg_version) }}
+{{ $rg_url := (printf "https://github.com/BurntSushi/ripgrep/releases/download/%s/%s" $rg_version $rg_package) }}
+["rg"]
+type = "archive"
+url = {{ $rg_url | quote }}
+extract = true
+stripComponents = 1
+refresh_period = "168h"
+
+## https://github.com/sharkdp/bat
+##
+{{ $bat_version := "v0.24.0" }}
+{{ $bat_package := (printf "bat-%s-x86_64-unknown-linux-musl.tar.gz" $bat_version) }}
+{{ $bat_url := (printf "https://github.com/sharkdp/bat/releases/download/%s/%s" $bat_version $bat_package) }}
+["bat"]
+type = "archive"
+url = {{ $bat_url | quote }}
+extract = true
+stripComponents = 1
+refresh_period = "168h"
+
+## https://github.com/direnv/direnv
+# install direnv, controll manually instead of with brew package
+{{ $direnv_version := "v2.35.0" }}
+{{ $direnv_package := (printf "direnv.%s-%s" .chezmoi.os .chezmoi.arch) }}
+{{ $direnv_url := (printf "https://github.com/direnv/direnv/releases/download/%s/%s" $direnv_version $direnv_package) }}
+["direnv"]
+type = "file"
+url = "{{ $direnv_url }}"
+executable = true
 {{- end }}
 {{- end }}
