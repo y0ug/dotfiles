@@ -11,6 +11,15 @@ RUN apt-get update && \
     jq \
     zsh \
     && rm -rf /var/lib/apt/lists/*
+RUN mkdir -p /etc/nix
+
+
+RUN echo "trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" \
+    >> /etc/nix/nix.conf \
+ && echo "trusted-substituters = https://nix-community.cachix.org https://cache.nixos.org" \
+    >> /etc/nix/nix.conf \
+ && echo "trusted-users = root @wheel" \
+    >> /etc/nix/nix.conf
 
 # Create user rick and add to sudo
 RUN useradd -m -s /bin/bash rick && \
