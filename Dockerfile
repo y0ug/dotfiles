@@ -49,7 +49,7 @@ RUN curl -L https://nixos.org/nix/install | sh -s -- --no-daemon
 
  # Install dotfiles and setup home-manager
 RUN curl -fsLS https://raw.githubusercontent.com/y0ug/dotfiles/refs/heads/main/install.sh | sh 
-# RUN nix shell nixpkgs#home-manager --command home-manager switch --flake ~/.config/home-manager/
+RUN echo "nix shell nixpkgs#home-manager --command home-manager switch --flake ~/.config/home-manager/" > update.sh
 #
 # # Source profile in every new shell
 # # RUN echo "source ~/.profile" >> ~/.bashrc
