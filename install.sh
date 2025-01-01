@@ -51,7 +51,6 @@ if ! chezmoi="$(command -v chezmoi)"; then
   unset chezmoi_installer bin_dir
 fi
 
-chezmoi_args="--exclude=encrypted"
 chezmoi_init_args="--exclude=encrypted"
 
 if [ -n "${DOTFILES_DEBUG:-}" ]; then
