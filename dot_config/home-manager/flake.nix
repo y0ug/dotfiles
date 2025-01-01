@@ -10,7 +10,8 @@
   outputs = inputs@{ nixpkgs, home-manager, ... }:
     let
       system = "x86_64-linux";
-      user = "rick";
+      # user = "rick";
+      # user = import ./user.nix;
       lib = nixpkgs.lib;
       pkgs = import nixpkgs {
         inherit system;
@@ -45,7 +46,7 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.root = import ./home.nix;
+              # home-manager.users.root = import ./home.nix;
 
               # Optionally, use home-manager.extraSpecialArgs to pass
               # arguments to home.nix

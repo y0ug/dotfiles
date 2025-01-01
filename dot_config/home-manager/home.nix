@@ -1,11 +1,14 @@
-{ config, pkgs, ... }:
+{ config, pkgs, user, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
+  # home.username = user.name;
+  # home.homeDirectory = user.homeDir;
   home.username = "rick";
   home.homeDirectory = "/home/rick";
 
+  programs.direnv.enable = true;
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
   # introduces backwards incompatible changes.

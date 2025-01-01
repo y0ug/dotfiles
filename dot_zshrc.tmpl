@@ -99,6 +99,11 @@ zinit wait lucid light-mode nocompile run-atpull atpull"%atclone" as"completion"
   has"chezmoi" id-as"chezmoi-completion"  atclone"chezmoi completion zsh > _chezmoi"  src"_chezmoi" @zdharma-continuum/null  \
   has"bw" id-as"bw-completion" atclone"bw completion --shell zsh > _bw" src"_bw"  @zdharma-continuum/null 
 
+# direnv for nixos
+zinit wait lucide light-mode run-atpull id-as"direnv-nixos" has"direnv" as"null" atclone'direnv hook zsh > zhook.zsh' \
+    atpull'%atclone' src"zhook.zsh" for \
+    @zdharma-continuum/null
+
 zinit wait lucid light-mode nocompile run-atpull atpull"%atclone" for \
   has"scw" id-as"scw-completion" atclone"scw autocomplete script > scw.sh" pick"scw.sh" @zdharma-continuum/null \
   id-as"brew-shellenv" if"[[ -v HOMEBREW_PREFIX ]]" atclone"$HOMEBREW_PREFIX/bin/brew shellenv > brew-env.sh" pick"brew-env.sh" @zdharma-continuum/null 
