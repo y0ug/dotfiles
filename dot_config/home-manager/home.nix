@@ -23,6 +23,8 @@
   home.packages = with pkgs; [
     neovim 
 
+    gcc
+
     nnn # terminal file manager
     # archives
     zip
