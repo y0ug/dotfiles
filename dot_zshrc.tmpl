@@ -118,10 +118,10 @@ zinit wait lucid for \
   # OMZ::plugins/vscode/vscode.plugin.zsh
 
 #### VSCode integration
-if [[ $(command -v code) ]]; then
-  zinit wait lucid light-mode is-snippet lucid if='[[ "${TERM_PROGRAM}" == "vscode" ]]' for \
-    "$(code --locate-shell-integration-path zsh)"
-fi
+# if [[ $(command -v code) ]]; then
+#   zinit wait lucid light-mode is-snippet lucid if='[[ "${TERM_PROGRAM}" == "vscode" ]]' for \
+#     "$(code --locate-shell-integration-path zsh)"
+# fi
 
 {{ else }}
   # light config
