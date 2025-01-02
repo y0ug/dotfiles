@@ -88,11 +88,6 @@
 		gh
 		github-copilot-cli
 
-		# kubernetes
-		helm
-		helmfile
-		kubectl
-		kubectx
 
 		hexyl # hexviewr
 		lazygit
