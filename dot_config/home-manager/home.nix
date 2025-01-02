@@ -21,9 +21,8 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
-    neovim 
+    # neovim 
 
-    gcc
 
     nnn # terminal file manager
     # archives
