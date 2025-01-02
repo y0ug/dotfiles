@@ -60,11 +60,11 @@ zinit wait lucid light-mode for \
   #   ~/.nix-profile/share/zsh/site-functions/
 
 # jq is required for zinit-annex-patch-dl
-zinit wait lucid light-mode for \
-    from'gh-r' \
-    sbin'* -> jq' \
-    nocompile \
-  @jqlang/jq
+# zinit wait lucid light-mode for \
+#     from'gh-r' \
+#     sbin'* -> jq' \
+#     nocompile \
+#   @jqlang/jq
 
   # atclone"dircolors -b LS_COLORS > clrs.zsh" \
   #   atpull'%atclone' pick"clrs.zsh" nocompile'!' \
@@ -79,7 +79,7 @@ zinit wait lucid light-mode for zdharma-continuum/history-search-multi-word
 zinit light zdharma-continuum/zinit-annex-patch-dl
 
 # zinit wait lucid light-mode from"gh-r" sbin"fzf;fzf-tmux" for junegunn/fzf-bin
-zinit pack"bgn-binary+keys" for fzf
+# zinit pack"bgn-binary+keys" for fzf
 
 # Configure prompt
 # PROMPT='%F{cyan}%n%f@%F{green}%m:%F{yellow}%~%f$ '
@@ -119,7 +119,7 @@ zinit wait lucid for \
 
 #### VSCode integration
 if [[ $(command -v code) ]]; then
-  zinit is-snippet lucid if='[[ "${TERM_PROGRAM}" == "vscode" ]]' for \
+  zinit wait lucid light-mode is-snippet lucid if='[[ "${TERM_PROGRAM}" == "vscode" ]]' for \
     "$(code --locate-shell-integration-path zsh)"
 fi
 
