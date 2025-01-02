@@ -123,6 +123,7 @@ zinit wait lucid light-mode run-atpull atpull"%atclone" blockf for \
   atclone"code --locate-shell-integration-path zsh > vscode.zsh" pick"vscode.sh" @zdharma-continuum/null
 
 hash exa 2>/dev/null && alias ls='exa --classify --header --git --group'
+hash nvim 2>/dev/null && alias vim='nvim'
 {{ else }}
   # light config
 {{ end }}
