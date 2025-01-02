@@ -3,6 +3,7 @@ lazy-lock.json
 bootstrap.sh
 install.sh
 Dockerfile
+nixos.sh
 
 {{- if not .is_home }}
 .ssh/id_ed25519
