@@ -122,6 +122,7 @@ zinit wait lucid light-mode run-atpull atpull"%atclone" blockf for \
   has"code" id-as"vscode-completion" if='[[ "${TERM_PROGRAM}" == "vscode" ]]' \
   atclone"code --locate-shell-integration-path zsh > vscode.zsh" pick"vscode.sh" @zdharma-continuum/null
 
+hash exa 2>/dev/null && alias ls='exa --classify --header --git --group'
 {{ else }}
   # light config
 {{ end }}
