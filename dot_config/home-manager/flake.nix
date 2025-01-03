@@ -38,7 +38,7 @@
       };
 
       homeConfigurations = {
-        rick = home-manager.lib.homeManagerConfiguration {
+        ${system}.rick = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [ ./home.nix ];
           extraSpecialArgs = { inherit inputs; };
