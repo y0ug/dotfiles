@@ -27,6 +27,9 @@
 
     zsh
     nushell
+    atuin # shell history
+
+    fastfetch
 
     nnn # terminal file manager
     # archives
