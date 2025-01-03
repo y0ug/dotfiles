@@ -58,6 +58,13 @@ zinit wait lucid light-mode for \
   nix-community/nix-zsh-completions 
   # is-snippet if"[[ -d \"$HOME/.nix-profile\" ]]" as=completion blockf \
   #   ~/.nix-profile/share/zsh/site-functions/
+zinit wait lucid light-mode for \
+  as"command" \
+  from"gh-r" bpick"atuin-*.tar.gz" mv"atuin*/atuin -> atuin" pick"atuin" \
+  atclone"./atuin init zsh > init.zsh; ./atuin gen-completions --shell zsh > _atuin" \
+  atpull"%atclone" src"init.zsh" \
+  atinit"zicompinit; zicdreplay" \
+  atuinsh/atuin
 
 # jq is required for zinit-annex-patch-dl
 # zinit wait lucid light-mode for \
