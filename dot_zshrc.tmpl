@@ -136,7 +136,23 @@ if [[ -n "$IN_NIX_SHELL" ]]; then
   echo "🚀 Inside a Nix devshell"
   hash starship 2>/dev/null && eval "$(starship init zsh)"
 fi
+copy () {
+    local filename="$1"
+    if [ ! -f "$filename" ]; then
+        echo "Error: File '$filename' does not exist."
+        return 1
+    }
 
+    # Generate a unique delimiter to avoid conflicts with file content
+    local delimiter="EOF_$(date +%s)_${RANDOM}"
+    
+    # Create the heredoc command
+    {
+        echo "cat << '$delimiter' > $filename"
+        cat "$filename"
+        echo "$delimiter"
+    } | clip.exe
+}
 {{ else }}
   # light config
 {{ end }}
