@@ -11,7 +11,6 @@
       url = "github:numtide/flake-utils";
       inputs.systems.follows = "systems";
     };
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs@{ nixpkgs, home-manager, flake-utils, ... }:
@@ -36,7 +35,7 @@
       #     ];
       #   };
       # };
-
+      package = {
       homeConfigurations = {
         rick = home-manager.lib.homeManagerConfiguration {
           inherit pkgs system;
@@ -44,6 +43,7 @@
           extraSpecialArgs = { inherit inputs; };
         };
       };
+        };
     });
 }
 
