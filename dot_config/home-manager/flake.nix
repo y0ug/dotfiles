@@ -5,11 +5,18 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    inputs.systems.url = "github:nix-systems/default";
+    inputs.flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.systems.follows = "systems";
+    };
   };
 
   outputs = inputs@{ nixpkgs, home-manager, ... }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
     let
-      system = "x86_64-linux";
       # user = "rick";
       # user = import ./user.nix;
       lib = nixpkgs.lib;
@@ -54,6 +61,7 @@
           ];
         };
       };
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
+      # formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
     };
+    )
 }
