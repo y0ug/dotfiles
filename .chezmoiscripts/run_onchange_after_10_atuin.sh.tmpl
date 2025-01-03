@@ -1,0 +1,13 @@
+{{ if .is_home }}
+
+set -eufo pipefail
+
+echo "Logging in to atuin..."
+if atuin login -u rick3 \
+  -p {{ (bitwardenFields "item" .bitwarden.atuin_key).password.value -}} \
+  -l {{ (bitwardenFields "item" .bitwarden.atuin_key).key.value -}}
+  echo "Logged in to atuin."
+else
+  echo "Failed to login to atuin."
+fi
+{{ end }}
