@@ -30,6 +30,7 @@ if atuin login -u rick3 \
   -p {{ (bitwardenFields "item" .bitwarden.atuin_key).password.value -}} \
   -k "{{ (bitwardenFields "item" .bitwarden.atuin_key).key.value -}}" ; then
   echo "Logged in to atuin."
+  atuin sync
 else
   echo "Failed to login to atuin."
 fi
