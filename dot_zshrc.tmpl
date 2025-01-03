@@ -137,14 +137,14 @@ if [[ -n "$IN_NIX_SHELL" ]]; then
   hash starship 2>/dev/null && eval "$(starship init zsh)"
 fi
 function copy () {
-    local filename="$1"
+    filename="$1"
     if [ ! -f "$filename" ]; then
         echo "Error: File '$filename' does not exist."
         return 1
     }
 
     # Generate a unique delimiter to avoid conflicts with file content
-    local delimiter="EOF_$(date +%s)_${RANDOM}"
+    delimiter="EOF_$(date +%s)_${RANDOM}"
     
     # Create the heredoc command
     {
