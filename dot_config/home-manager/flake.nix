@@ -6,12 +6,13 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    inputs.systems.url = "github:nix-systems/default";
-    inputs.flake-utils = {
+    systems.url = "github:nix-systems/default";
+    flake-utils = {
       url = "github:numtide/flake-utils";
       inputs.systems.follows = "systems";
     };
   };
+  
 
   outputs = inputs@{ nixpkgs, home-manager, ... }:
     flake-utils.lib.eachDefaultSystem (
@@ -62,5 +63,6 @@
         };
       };
       # formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
+};
     )
 }
