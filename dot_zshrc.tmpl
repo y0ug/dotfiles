@@ -137,10 +137,6 @@ if [[ -n "$IN_NIX_SHELL" ]]; then
   hash starship 2>/dev/null && eval "$(starship init zsh)"
 fi
 
-if [[ -n "$DIRENV_DIR" ]]; then
-  echo "🚀 Inside a direnv-managed Nix devshell"
-  hash starship 2>/dev/null && eval "$(starship init zsh)"
-fi
 {{ else }}
   # light config
 {{ end }}
