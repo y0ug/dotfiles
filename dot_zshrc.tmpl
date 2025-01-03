@@ -131,6 +131,16 @@ zinit wait lucid light-mode run-atpull atpull"%atclone" blockf for \
 
 hash exa 2>/dev/null && alias ls='exa --classify --header --git --group'
 hash nvim 2>/dev/null && alias vim='nvim'
+
+if [[ -n "$IN_NIX_SHELL" ]]; then
+  echo "🚀 Inside a Nix devshell"
+  hash starship 2>/dev/null && eval "$(starship init zsh)"
+fi
+
+if [[ -n "$DIRENV_DIR" ]]; then
+  echo "🚀 Inside a direnv-managed Nix devshell"
+  hash starship 2>/dev/null && eval "$(starship init zsh)"
+fi
 {{ else }}
   # light config
 {{ end }}
