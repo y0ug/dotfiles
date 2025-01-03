@@ -14,40 +14,36 @@
   };
 
   outputs = inputs@{ nixpkgs, home-manager, flake-utils, ... }:
+    flake-utils.lib.eachDefaultSystem (system:
     let
-      eachSystem = flake-utils.lib.eachDefaultSystem (system:
-        let
-          pkgs = import nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-          };
-        in
-        {
-          nixosConfigurations = {
-            rick = nixpkgs.lib.nixosSystem {
-              inherit system;
-              modules = [
-                ./configuration.nix
-                home-manager.nixosModules.home-manager
-                {
-                  home-manager.useGlobalPkgs = true;
-                  home-manager.useUserPackages = true;
-                  home-manager.users.rick = import ./home.nix;
-                }
-              ];
-            };
-          };
-        }
-      );
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
     in
-    eachSystem // {
+    {
+      nixosConfigurations = {
+        rick = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.rick = import ./home.nix;
+            }
+          ];
+        };
+      };
+
       homeConfigurations = {
         rick = home-manager.lib.homeManagerConfiguration {
-          inherit (eachSystem.x86_64-linux) pkgs;
+          inherit pkgs;
           modules = [ ./home.nix ];
           extraSpecialArgs = { inherit inputs; };
         };
       };
-    };
+    });
 }
 
