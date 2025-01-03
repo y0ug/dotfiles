@@ -66,6 +66,7 @@ zinit wait lucid light-mode for \
 #   atinit"zicompinit; zicdreplay" \
 #   atuinsh/atuin
 
+
 # jq is required for zinit-annex-patch-dl
 # zinit wait lucid light-mode for \
 #     from'gh-r' \
@@ -137,6 +138,7 @@ if [[ -n "$IN_NIX_SHELL" ]]; then
   hash starship 2>/dev/null && eval "$(starship init zsh)"
 fi
 
+zinit load atuinsh/atuin
 
 function copy () {
     local filename="$1"
