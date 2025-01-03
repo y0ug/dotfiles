@@ -95,7 +95,6 @@
 
 		hexyl # hexviewr
 		lazygit
-		scaleway-cli
 		starship
 		xh # curl replacement for API
 
