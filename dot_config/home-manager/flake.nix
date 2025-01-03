@@ -35,6 +35,8 @@
 
         rick = inputs.home-manager.lib.homeManagerConfiguration {
           #   # Specify the host architecture
+            #
+          inherit system;
           inherit pkgs;
           #
           #   # Specify your home configuration modules here, for example,
