@@ -14,7 +14,7 @@
   };
   
 
-  outputs = inputs@{ nixpkgs, home-manager, ... }:
+  outputs = inputs@{ nixpkgs, home-manager, flake-utils, ... }:
     flake-utils.lib.eachDefaultSystem (
       system:
     let
