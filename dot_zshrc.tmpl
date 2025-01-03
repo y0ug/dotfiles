@@ -136,6 +136,8 @@ if [[ -n "$IN_NIX_SHELL" ]]; then
   echo "🚀 Inside a Nix devshell"
   hash starship 2>/dev/null && eval "$(starship init zsh)"
 fi
+
+
 function copy () {
     local filename="$1"
     if [ ! -f "$filename" ]; then
