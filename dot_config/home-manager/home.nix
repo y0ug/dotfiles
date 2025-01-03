@@ -25,6 +25,8 @@
     nodejs
     gcc
 
+    zsh
+    nushell
 
     nnn # terminal file manager
     # archives
@@ -42,6 +44,8 @@
     socat # replacement of openbsd-netcat
     nmap # A utility for network discovery and security auditing
     ipcalc  # it is a calculator for the IPv4/v6 addresses
+    curl
+    wget
 
     # utils
     ripgrep # recursively searches directories for a regex pattern
@@ -101,6 +105,11 @@
     pandoc
     flare-floss
     pandoc-cli
+
+    # dev/python general
+    pre-commit
+    poetry
+    pipx
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -119,8 +128,8 @@
   };
   programs.git = {
     enable = true;
-    userName = "Your Name";
-    userEmail = "your.email@example.com";
+    userName = "Hugo Caron";
+    userEmail = "hca443@gmail.com";
   };
   # Home Manager can also manage your environment variables through
   # 'home.sessionVariables'. These will be explicitly sourced when using a
