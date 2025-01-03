@@ -56,6 +56,10 @@
 		bat # cat alternative
 		fd # find replacement
 
+    # encryption
+    sops
+    age
+
 # misc
     file
     which
