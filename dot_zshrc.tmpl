@@ -138,8 +138,8 @@ if [[ -n "$IN_NIX_SHELL" ]]; then
   hash starship 2>/dev/null && eval "$(starship init zsh)"
 fi
 
-eval "$(atuin init zsh)"
-#zinit load atuinsh/atuin
+# eval "$(atuin init zsh)"
+zinit wait lucid  light-mode for atuinsh/atuin
 
 function copy () {
     local filename="$1"
