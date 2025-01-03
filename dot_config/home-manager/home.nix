@@ -29,6 +29,8 @@
     nushell
     atuin # shell history
 
+    bitwarden-cli
+
     fastfetch
 
     nnn # terminal file manager
