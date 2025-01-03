@@ -145,7 +145,7 @@ function copy () {
     if [ ! -f "$filename" ]; then
         echo "Error: File '$filename' does not exist."
         return 1
-    }
+    fi 
 
     # Generate a unique delimiter to avoid conflicts with file content
     # let delimiter="EOF_$(date +%s)_${RANDOM}"
