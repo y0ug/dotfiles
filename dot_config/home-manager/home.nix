@@ -104,7 +104,6 @@
     # work
     pandoc
     flare-floss
-    pandoc-cli
 
     # dev/python general
     pre-commit
