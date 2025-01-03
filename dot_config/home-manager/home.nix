@@ -90,7 +90,6 @@
 
 		# github cli
 		gh
-		github-copilot-cli
 
 
 		hexyl # hexviewr
