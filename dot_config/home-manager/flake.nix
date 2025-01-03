@@ -16,9 +16,10 @@
   outputs = inputs@{ nixpkgs, home-manager, flake-utils, ... }:
     flake-utils.lib.eachDefaultSystem (system:
     let
-      pkgs = import nixpkgs {
-        inherit system;
-      };
+      pkgs = nixpkgs.legacyPackages.${system};
+      # pkgs = import nixpkgs {
+      #   inherit system;
+      # };
     in
     {
       # nixosConfigurations = {
@@ -35,7 +36,7 @@
       #     ];
       #   };
       # };
-      homeConfigurations.rick = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations.${systems}.rick = home-manager.lib.homeManagerConfiguration {
           inherit pkgs system;
           modules = [ ./home.nix ];
           extraSpecialArgs = { inherit inputs; };
