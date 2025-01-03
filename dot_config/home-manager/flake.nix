@@ -33,8 +33,7 @@
     {
       homeConfigurations = {
 
-        inherit system;
-        ${system}.rick = inputs.home-manager.lib.homeManagerConfiguration {
+        rick = inputs.home-manager.lib.homeManagerConfiguration {
           #   # Specify the host architecture
             #
           inherit pkgs;
@@ -43,7 +42,7 @@
           #   # the path to your home.nix.
           modules = [ ./home.nix ];
           #
-          #   extraSpecialArgs = { inherit inputs; };
+          extraSpecialArgs = { inherit inputs; };
         };
       };
       nixosConfigurations = {
