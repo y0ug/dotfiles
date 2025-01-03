@@ -14,7 +14,7 @@
   };
 
   outputs = inputs@{ nixpkgs, home-manager, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (let system:
+    flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = import nixpkgs {
         inherit system;
