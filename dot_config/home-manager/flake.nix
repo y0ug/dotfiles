@@ -22,20 +22,20 @@
       # };
     in
     {
-      # nixosConfigurations = {
-      #   rick = nixpkgs.lib.nixosSystem {
-      #     inherit system;
-      #     modules = [
-      #       ./configuration.nix
-      #       home-manager.nixosModules.home-manager
-      #       {
-      #         home-manager.useGlobalPkgs = true;
-      #         home-manager.useUserPackages = true;
-      #         home-manager.users.rick = import ./home.nix;
-      #       }
-      #     ];
-      #   };
-      # };
+      nixosConfigurations = {
+        rick = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.rick = import ./home.nix;
+            }
+          ];
+        };
+      };
       homeConfigurations.${system}.rick = home-manager.lib.homeManagerConfiguration {
           # inherit pkgs system;
           pkgs = nixpkgs.legacyPackages.${system};
