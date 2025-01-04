@@ -11,12 +11,12 @@
   outputs = inputs@{ nixpkgs, home-manager, flake-utils, ... }:
     flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
     let
-      pkgs = import nixpkgs {
-        inherit system;
-        config = {
-          allowUnfree = true;
-        };
-      };
+      # pkgs = import nixpkgs {
+      #   inherit system;
+      #   config = {
+      #     allowUnfree = true;
+      #   };
+      # };
       # getHomeConfig = system: name: outputs.legacyPackages.${system}.homeConfigurations;
     in
     {
