@@ -27,7 +27,14 @@
 
         rick = inputs.home-manager.lib.homeManagerConfiguration {
           #   # Specify the host architecture
-          inherit pkgs;
+          # inherit pkgs;
+          inherit system;
+      pkgs = import nixpkgs {
+        inherit system;
+        config = {
+          allowUnfree = true;
+        };
+      };
           #
           #   # Specify your home configuration modules here, for example,
           #   # the path to your home.nix.
