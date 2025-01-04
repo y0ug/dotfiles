@@ -22,7 +22,7 @@
       inherit system;
       ${system}.homeConfigurations = {
 
-        rick = inputs.home-manager.lib.homeManagerConfiguration {
+        rick = home-manager.lib.homeManagerConfiguration {
           modules = [ ./home.nix ];
           extraSpecialArgs = { inherit inputs; };
         };
