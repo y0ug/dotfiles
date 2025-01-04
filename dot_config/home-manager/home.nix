@@ -1,12 +1,16 @@
 { config, pkgs, user, ... }:
-
+  isLinux = pkgs.stdenv.hostPlatform.isLinux;
+  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
+  unsupported = builtins.abort "Unsupported platform";
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   # home.username = user.name;
   # home.homeDirectory = user.homeDir;
   home.username = "rick";
-  home.homeDirectory = "/home/rick";
+  home.homeDirectory =
+    if isLinux then "/home/rick" else
+    if isDarwin then "/Users/rick" else unsupported;
 
   programs.direnv.enable = true;
   # This value determines the Home Manager release that your configuration is
@@ -20,7 +24,7 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = with pkgs; [
+  home.packages = with pkgs; ([
     neovim 
     nodejs
     gcc
@@ -81,7 +85,6 @@
 
     glow # markdown previewer in terminal
     btop  # replacement of htop/nmon
-    iotop # io monitoring
     iftop # network monitoring
 
       # system call monitoring
@@ -116,7 +119,12 @@
     pre-commit
     poetry
     pipx
-  ];
+  ] ++ lib.optionals isLinux [
+    iotop # io monitoring
+
+    ] ++ lib.optionals isDarwin [
+    # macOS packages
+    ]);
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
