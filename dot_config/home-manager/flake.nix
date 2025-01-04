@@ -21,13 +21,10 @@
     in
     {
       inherit system;
-      legacyPackages.${system}.homeConfigurations = {
-
-        rick = home-manager.lib.homeManagerConfiguration {
+      package.${system}.homeConfigurations.rick = home-manager.lib.homeManagerConfiguration {
           modules = [ ./home.nix ];
           extraSpecialArgs = { inherit inputs; };
         };
-      };
       # nixosConfigurations = {
       #   rick = nixpkgs.lib.nixosSystem {
       #     inherit system;
