@@ -20,22 +20,36 @@
       # getHomeConfig = system: name: outputs.legacyPackages.${system}.homeConfigurations;
     in
     {
+
+      homeConfigurations = {
+
+        rick = inputs.home-manager.lib.homeManagerConfiguration {
+          #   # Specify the host architecture
+          inherit pkgs;
+          #
+          #   # Specify your home configuration modules here, for example,
+          #   # the path to your home.nix.
+          modules = [ ./home.nix ];
+          #
+          #   extraSpecialArgs = { inherit inputs; };
+        };
+      };
       # inherit system;
       # packages.${system}.homeConfigurations.rick = home-manager.lib.homeManagerConfiguration {
       #     inherit pkgs;
       #     modules = [ ./home.nix ];
       #     extraSpecialArgs = { inherit inputs; };
       # };
-      homeConfigurations.rick = inputs.home-manager.lib.homeManagerConfiguration {
-          modules = [ ./home.nix ];
-          # extraSpecialArgs = { inherit inputs; };
-          pkgs = import nixpkgs {
-            system = "x86_64-linux";
-            config = {
-              allowUnfree = true;
-            };
-        };
-    };
+    #   homeConfigurations.rick = inputs.home-manager.lib.homeManagerConfiguration {
+    #       modules = [ ./home.nix ];
+    #       # extraSpecialArgs = { inherit inputs; };
+    #       pkgs = import nixpkgs {
+    #         system = "x86_64-linux";
+    #         config = {
+    #           allowUnfree = true;
+    #         };
+    #     };
+    # };
       # nixosConfigurations = {
       #   rick = nixpkgs.lib.nixosSystem {
       #     inherit system;
