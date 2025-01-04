@@ -42,7 +42,7 @@
           };
         };
 
-      homeConfigurations."rick@linux" = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations."rick@osx" = home-manager.lib.homeManagerConfiguration {
           # inherit pkgs system;
           modules = [ ./home.nix ];
           # extraSpecialArgs = { inherit inputs pkgs; };
