@@ -9,8 +9,6 @@
   };
 
   outputs = inputs@{ nixpkgs, home-manager, ... }:
-    let
-    in
     {
 
       homeConfigurations = {
@@ -22,6 +20,7 @@
           modules = [ ./home.nix ];
           extraSpecialArgs = { inherit inputs; };
         };
+      
         osx-rick = inputs.home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs {
             system = "aarch64-darwin";
