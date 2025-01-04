@@ -35,6 +35,7 @@
               allowUnfree = true;
             };
         };
+    };
       # nixosConfigurations = {
       #   rick = nixpkgs.lib.nixosSystem {
       #     inherit system;
