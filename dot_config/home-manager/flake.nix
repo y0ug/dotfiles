@@ -32,8 +32,6 @@
           extraSpecialArgs = { inherit inputs; };
         };
       };
-
-
-    });
+    };
 }
 
