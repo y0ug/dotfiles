@@ -17,10 +17,11 @@
           allowUnfree = true;
         };
       };
+      getHomeConfig = system: name: outputs.legacyPackages.${system}.homeConfigurations.
     in
     {
       inherit system;
-      ${system}.homeConfigurations = {
+      legacyPackages.${system}.homeConfigurations = {
 
         rick = home-manager.lib.homeManagerConfiguration {
           modules = [ ./home.nix ];
