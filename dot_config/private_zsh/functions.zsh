@@ -6,8 +6,10 @@ load_env() {
     echo "❌ Error: Environment file '$env_file' not found!"
     return 1
   fi
-
+  
+  set -a
   eval "$(sops -d "$env_file" | sed 's/^export //')"
+  set +a
   export SOPS_ENV_LOADED="$env_file"
 
   echo "✅ Loaded environment from $env_file"
