@@ -25,7 +25,6 @@
           inherit pkgs;
           modules = [ ./home.nix ];
           extraSpecialArgs = { inherit inputs; };
-        };
       };
       homeConfigurations.rick2 = home-manager.lib.homeManagerConfiguration {
           modules = [ ./home.nix ];
@@ -36,7 +35,6 @@
               allowUnfree = true;
             };
         };
-  };
       # nixosConfigurations = {
       #   rick = nixpkgs.lib.nixosSystem {
       #     inherit system;
