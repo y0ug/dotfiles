@@ -40,14 +40,14 @@
           };
         };
 
-      homeConfigurations."rick@osx" = home-manager.lib.homeManagerConfiguration {
-          # inherit pkgs system;
-          modules = [ ./home.nix ];
-          # extraSpecialArgs = { inherit inputs pkgs; };
-          pkgs = import nixpkgs {
-            system = "aarch64-darwin";
-          };
-        };
+      # homeConfigurations."rick@osx" = home-manager.lib.homeManagerConfiguration {
+      #     # inherit pkgs system;
+      #     modules = [ ./home.nix ];
+      #     # extraSpecialArgs = { inherit inputs pkgs; };
+      #     pkgs = import nixpkgs {
+      #       system = "aarch64-darwin";
+      #     };
+      #   };
     };
 }
 
