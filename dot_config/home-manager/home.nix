@@ -35,7 +35,6 @@ in
     nushell
     atuin # shell history
 
-    bitwarden-cli
 
     fastfetch
 
@@ -124,6 +123,9 @@ in
       ethtool
       pciutils # lspci
       usbutils # lsusb   
+
+
+      bitwarden-cli # failed to build on darwin
     ] ++ lib.optionals isDarwin [
       # macOS packages
     ]);
