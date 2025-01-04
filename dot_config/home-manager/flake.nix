@@ -19,7 +19,7 @@
       };
     in
     {
-        inherit system;
+      inherit system;
       ${system}.homeConfigurations = {
 
         rick = inputs.home-manager.lib.homeManagerConfiguration {
