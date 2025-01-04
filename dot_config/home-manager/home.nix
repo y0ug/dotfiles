@@ -34,6 +34,7 @@ in
     zsh
     nushell
     atuin # shell history
+    tmux
 
 
     fastfetch
