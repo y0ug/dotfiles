@@ -8,29 +8,26 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, ... }:
-    {
+  outputs = inputs@{ nixpkgs, home-manager, ... }: {
+    homeConfigurations = {
+      linux64-rick = inputs.home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs {
+          system = "x86_64-linux";
+          config = {}; # allowUnfree = true; };
+          };
+          modules = [ ./home.nix ];
+          extraSpecialArgs = { inherit inputs; };
+        };
 
-      homeConfigurations = {
-        linux64-rick = inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs {
-            system = "x86_64-linux";
-            config = { # allowUnfree = true; };
-          };
-          modules = [ ./home.nix ];
-          extraSpecialArgs = { inherit inputs; };
+      osx-rick = inputs.home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs {
+          system = "aarch64-darwin";
+          config = {}; # allowUnfree = true; };
         };
-      
-        osx-rick = inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs {
-            system = "aarch64-darwin";
-            config = { # allowUnfree = true; };
-          };
-          pkgs = nixpkgs.legacyPackages.${system};
-          modules = [ ./home.nix ];
-          extraSpecialArgs = { inherit inputs; };
-        };
+        modules = [ ./home.nix ];
+        extraSpecialArgs = { inherit inputs; };
       };
     };
+  };
 }
 
