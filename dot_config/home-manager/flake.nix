@@ -8,8 +8,9 @@
   };
 
   outputs = inputs@{ nixpkgs, home-manager, ... }:
+    flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ] (system:
     let
-      system = "x86_64-linux";
+      # system = "x86_64-linux";
       # user = "rick";
       # user = import ./user.nix;
       lib = nixpkgs.lib;
@@ -54,7 +55,7 @@
           ];
         };
       };
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
-    };
+      # formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
+    });
 }
 
