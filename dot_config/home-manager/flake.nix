@@ -21,7 +21,7 @@
     in
     {
       inherit system;
-      package.${system}.homeConfigurations.rick = home-manager.lib.homeManagerConfiguration {
+      packages.${system}.homeConfigurations.rick = home-manager.lib.homeManagerConfiguration {
           modules = [ ./home.nix ];
           extraSpecialArgs = { inherit inputs; };
         };
