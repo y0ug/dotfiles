@@ -24,7 +24,7 @@
     {
       homeConfigurations = {
 
-        rick = inputs.home-manager.lib.homeManagerConfiguration {
+        linux.rick = inputs.home-manager.lib.homeManagerConfiguration {
           #   # Specify the host architecture
           # inherit pkgs;
           system = "x86_64-linux";
