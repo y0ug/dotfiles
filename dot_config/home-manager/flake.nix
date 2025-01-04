@@ -20,13 +20,13 @@
       # getHomeConfig = system: name: outputs.legacyPackages.${system}.homeConfigurations;
     in
     {
-      inherit system;
-      packages.${system}.homeConfigurations.rick = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [ ./home.nix ];
-          extraSpecialArgs = { inherit inputs; };
-      };
-      homeConfigurations.rick2 = home-manager.lib.homeManagerConfiguration {
+      # inherit system;
+      # packages.${system}.homeConfigurations.rick = home-manager.lib.homeManagerConfiguration {
+      #     inherit pkgs;
+      #     modules = [ ./home.nix ];
+      #     extraSpecialArgs = { inherit inputs; };
+      # };
+      homeConfigurations.rick = home-manager.lib.homeManagerConfiguration {
           modules = [ ./home.nix ];
           # extraSpecialArgs = { inherit inputs; };
           pkgs = import nixpkgs {
