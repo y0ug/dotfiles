@@ -14,7 +14,6 @@
   };
 
   outputs = inputs@{ nixpkgs, home-manager, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
     let
 
     in
@@ -50,6 +49,6 @@
             system = "aarch64-darwin";
           };
         };
-    });
+    };
 }
 
