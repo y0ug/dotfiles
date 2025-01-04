@@ -4,7 +4,7 @@ let
   isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
   unsupported = builtins.abort "Unsupported platform";
 in
-{
+  {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   # home.username = user.name;
@@ -12,7 +12,7 @@ in
   home.username = "rick";
   home.homeDirectory =
     if isLinux then "/home/rick" else
-    if isDarwin then "/Users/rick" else unsupported;
+      if isDarwin then "/Users/rick" else unsupported;
 
   programs.direnv.enable = true;
   # This value determines the Home Manager release that your configuration is
@@ -64,14 +64,14 @@ in
     yq-go # yaml processor https://github.com/mikefarah/yq
     eza # A modern replacement for ‘ls’
     fzf # A command-line fuzzy finder
-		bat # cat alternative
-		fd # find replacement
+    bat # cat alternative
+    fd # find replacement
 
     # encryption
     sops
     age
 
-# misc
+    # misc
     file
     which
     tree
@@ -89,27 +89,22 @@ in
     btop  # replacement of htop/nmon
     iftop # network monitoring
 
-      # system call monitoring
+    # system call monitoring
     lsof # list open files
 
-    # system tools
-    sysstat
-    lm_sensors # for `sensors` command
-    ethtool
-    pciutils # lspci
-    usbutils # lsusb
 
 
-		# github cli
-		gh
+
+    # github cli
+    gh
 
 
-		hexyl # hexviewr
-		lazygit
-		starship
-		xh # curl replacement for API
+    hexyl # hexviewr
+    lazygit
+    starship
+    xh # curl replacement for API
 
-		chezmoi
+    chezmoi
 
     # work
     pandoc
@@ -120,11 +115,17 @@ in
     poetry
     pipx
   ] ++ lib.optionals isLinux [
-    iotop # io monitoring
-    strace # system call monitoring
-    ltrace # library call monitoring
+      iotop # io monitoring
+      strace # system call monitoring
+      ltrace # library call monitoring
+      # system tools
+      sysstat
+      lm_sensors # for `sensors` command
+      ethtool
+      pciutils # lspci
+      usbutils # lsusb   
     ] ++ lib.optionals isDarwin [
-    # macOS packages
+      # macOS packages
     ]);
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
