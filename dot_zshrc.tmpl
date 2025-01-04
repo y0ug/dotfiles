@@ -116,16 +116,12 @@ zinit wait2 lucid light-mode nocompile run-atpull atpull"%atclone" for \
   has"scw" id-as"scw-completion" atclone"scw autocomplete script shell=zsh > scw.sh" pick"scw.sh" @zdharma-continuum/null \
   id-as"brew-shellenv" if"[[ -v HOMEBREW_PREFIX ]]" atclone"$HOMEBREW_PREFIX/bin/brew shellenv > brew-env.sh" pick"brew-env.sh" @zdharma-continuum/null 
 
-if grep -q "microsoft" /proc/version; then
-    echo "Running in WSL"
-else
-    echo "Not running in WSL"
-fi
 
 if [[ -n "$IS_WSL" ]]; then
   # zsh-autosuggestions on WSL2 lag because of /mnt/c/Windows/ in path
   unsetopt PATH_DIRS 
 fi
+
   # zinit wait lucid light-mode for \
   #   atinit"zstyle :omz:plugins:ssh-agent identities id_ed25519" OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh 
   #   # OMZ::lib/clipboard.zsh \
