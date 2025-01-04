@@ -35,12 +35,12 @@
           #   extraSpecialArgs = { inherit inputs; };
         };
       };
-      inherit system;
-      packages.${system}.homeConfigurations.rick2 = inputs.home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [ ./home.nix ];
-          extraSpecialArgs = { inherit inputs; };
-      };
+      # inherit system;
+      # packages.${system}.homeConfigurations.rick2 = inputs.home-manager.lib.homeManagerConfiguration {
+      #     inherit pkgs;
+      #     modules = [ ./home.nix ];
+      #     extraSpecialArgs = { inherit inputs; };
+      # };
     #   homeConfigurations.rick = inputs.home-manager.lib.homeManagerConfiguration {
     #       modules = [ ./home.nix ];
     #       # extraSpecialArgs = { inherit inputs; };
