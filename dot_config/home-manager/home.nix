@@ -1,7 +1,9 @@
 { config, pkgs, user, ... }:
+let
   isLinux = pkgs.stdenv.hostPlatform.isLinux;
   isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
   unsupported = builtins.abort "Unsupported platform";
+in
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
