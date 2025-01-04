@@ -6,14 +6,13 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    systems.url = "github:nix-systems/default";
-    flake-utils = {
-      url = "github:numtide/flake-utils";
-      inputs.systems.follows = "systems";
-    };
+    # systems.url = "github:nix-systems/default";
+    # flake-utils = {
+    #   url = "github:numtide/flake-utils";
+    # };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, flake-utils, ... }:
+  outputs = inputs@{ nixpkgs, home-manager, ... }:
     let
 
     in
