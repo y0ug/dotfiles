@@ -17,7 +17,7 @@
           allowUnfree = true;
         };
       };
-      getHomeConfig = system: name: outputs.legacyPackages.${system}.homeConfigurations;
+      # getHomeConfig = system: name: outputs.legacyPackages.${system}.homeConfigurations;
     in
     {
       inherit system;
