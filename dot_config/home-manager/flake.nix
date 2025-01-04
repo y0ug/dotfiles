@@ -9,7 +9,7 @@
   };
 
   outputs = inputs@{ nixpkgs, home-manager, flake-utils, ... }:
-    # flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
+    flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
     let
       # user = "rick";
       # user = import ./user.nix;
@@ -22,46 +22,12 @@
       #nixpkgs.legacyPackages.${system};
     in
     {
-      homeConfigurations = {
-
-        linux.rick = inputs.home-manager.lib.homeManagerConfiguration {
-          #   # Specify the host architecture
-          # inherit pkgs;
-          system = "x86_64-linux";
-          # inherit system;
-          pkgs = import nixpkgs {
-            inherit system;
-            config = {
-              allowUnfree = true;
-            };
-          };
-          #
-          #   # Specify your home configuration modules here, for example,
-          #   # the path to your home.nix.
-          modules = [ ./home.nix ];
-          #
-          #   extraSpecialArgs = { inherit inputs; };
-        };
-      };
-      homeConfigurations = {
+        inherit system;
+      ${system}.homeConfigurations = {
 
         rick = inputs.home-manager.lib.homeManagerConfiguration {
-          #   # Specify the host architecture
-          # inherit pkgs;
-          system = "aarch64-darwin";
-          # inherit system;
-          pkgs = import nixpkgs {
-            inherit system;
-            config = {
-              allowUnfree = true;
-            };
-          };
-          #
-          #   # Specify your home configuration modules here, for example,
-          #   # the path to your home.nix.
           modules = [ ./home.nix ];
-          #
-          #   extraSpecialArgs = { inherit inputs; };
+          extraSpecialArgs = { inherit inputs; };
         };
       };
       # nixosConfigurations = {
@@ -83,6 +49,6 @@
       #   };
       # };
       # formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
-    };
+    });
 }
 
