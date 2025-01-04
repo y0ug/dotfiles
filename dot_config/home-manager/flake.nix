@@ -9,7 +9,7 @@
   };
 
   outputs = inputs@{ nixpkgs, home-manager, flake-utils, ... }:
-    flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ] (system:
+    flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
     let
       # system = "x86_64-linux";
       # user = "rick";
