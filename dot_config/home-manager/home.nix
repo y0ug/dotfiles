@@ -90,7 +90,6 @@ in
     iftop # network monitoring
 
       # system call monitoring
-    ltrace # library call monitoring
     lsof # list open files
 
     # system tools
@@ -123,7 +122,7 @@ in
   ] ++ lib.optionals isLinux [
     iotop # io monitoring
     strace # system call monitoring
-
+    ltrace # library call monitoring
     ] ++ lib.optionals isDarwin [
     # macOS packages
     ]);
