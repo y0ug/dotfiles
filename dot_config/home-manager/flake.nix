@@ -9,9 +9,9 @@
   };
 
   outputs = inputs@{ nixpkgs, home-manager, flake-utils, ... }:
-    # flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
+    flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
     let
-    system = "x86_64-linux";
+    # system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
         config = {
@@ -70,6 +70,6 @@
       #   };
       # };
       # formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
-    };
+    });
 }
 
