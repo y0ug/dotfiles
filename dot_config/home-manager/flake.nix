@@ -14,12 +14,10 @@
       # system = "x86_64-linux";
       # user = "rick";
       # user = import ./user.nix;
-      lib = nixpkgs.lib;
       pkgs = import nixpkgs {
         inherit system;
         config = {
           allowUnfree = true;
-          allowUnfreePredicate = _: true;
         };
       };
       #nixpkgs.legacyPackages.${system};
