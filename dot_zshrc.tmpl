@@ -6,6 +6,8 @@ if [[ -d "$HOME/.nix-profile/share/zsh/site-functions/" ]]; then
   fpath+="$HOME/.nix-profile/share/zsh/site-functions/" 
 fi
 
+[[ -f ~/.config/zsh/functions.zsh ]] && source ~/.config/zsh/functions.zsh
+
 # History
 HISTFILE=~/.zsh_history
 
@@ -152,24 +154,6 @@ fi
 # eval "$(atuin init zsh)"
 zinit wait lucid  light-mode for atuinsh/atuin
 
-function copy () {
-    local filename="$1"
-    if [ ! -f "$filename" ]; then
-        echo "Error: File '$filename' does not exist."
-        return 1
-    fi 
-
-    # Generate a unique delimiter to avoid conflicts with file content
-    # let delimiter="EOF_$(date +%s)_${RANDOM}"
-    local delimiter="EOF_CAT"
-    
-    # Create the heredoc command
-    {
-        echo "cat << '$delimiter' > $filename"
-        cat "$filename"
-        echo "$delimiter"
-    } | clip.exe
-}
 {{ else }}
   # light config
 {{ end }}
