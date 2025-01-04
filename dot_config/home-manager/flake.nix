@@ -26,9 +26,15 @@
           modules = [ ./home.nix ];
           extraSpecialArgs = { inherit inputs; };
         };
-      homeConfigurations.rick = home-manager.lib.homeManagerConfiguration {
+      };
+      homeConfigurations.rick2 = home-manager.lib.homeManagerConfiguration {
           modules = [ ./home.nix ];
-          extraSpecialArgs = { inherit inputs; };
+          # extraSpecialArgs = { inherit inputs; };
+          pkgs = import nixpkgs {
+            system = "x86_64-linux";
+            config = {
+              allowUnfree = true;
+            };
         };
       # nixosConfigurations = {
       #   rick = nixpkgs.lib.nixosSystem {
