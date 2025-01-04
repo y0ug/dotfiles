@@ -42,7 +42,7 @@ copy_file() {
         echo "Error: No files specified."
         echo "Usage: copy_file file1 [file2 ...]"
         return 1
-    }
+    fi 
 
     # Detect clipboard command based on system
     local clip_cmd
