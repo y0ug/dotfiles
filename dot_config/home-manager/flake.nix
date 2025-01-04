@@ -26,7 +26,7 @@
       #     modules = [ ./home.nix ];
       #     extraSpecialArgs = { inherit inputs; };
       # };
-      homeConfigurations.rick = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations.rick = inputs.home-manager.lib.homeManagerConfiguration {
           modules = [ ./home.nix ];
           # extraSpecialArgs = { inherit inputs; };
           pkgs = import nixpkgs {
