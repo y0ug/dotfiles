@@ -11,7 +11,7 @@
   outputs = inputs@{ nixpkgs, home-manager, flake-utils, ... }:
     flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
     let
-      # system = "x86_64-linux";
+      system = "x86_64-linux";
       # user = "rick";
       # user = import ./user.nix;
       pkgs = import nixpkgs {
