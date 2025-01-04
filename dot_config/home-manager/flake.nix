@@ -11,15 +11,12 @@
   outputs = inputs@{ nixpkgs, home-manager, flake-utils, ... }:
     flake-utils.lib.eachSystem [ "x86_64-linux" ] (system:
     let
-      # user = "rick";
-      # user = import ./user.nix;
       pkgs = import nixpkgs {
         inherit system;
         config = {
           allowUnfree = true;
         };
       };
-      #nixpkgs.legacyPackages.${system};
     in
     {
         inherit system;
