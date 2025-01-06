@@ -27,8 +27,8 @@ fi
 
 echo "Logging in to atuin..."
 if atuin login -u rick3 \
-  -p {{ (bitwardenFields "item" .bitwarden.atuin_key).password.value -}} \
-  -k "{{ (bitwardenFields "item" .bitwarden.atuin_key).key.value -}}" ; then
+  -p $(bw list items --search atuin |  jq -r '.[0].fields[] | select(.name=="password").value') 
+  -k $(bw list items --search atuin |  jq -r '.[0].fields[] | select(.name=="key").value')
   echo "Logged in to atuin."
   atuin sync
 else
