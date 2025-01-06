@@ -1,5 +1,5 @@
 # # Source system profiles
-[[ -e /etc/profile ]] && source /etc/profile
+#[[ -e /etc/profile ]] && source /etc/profile
 [[ -e ~/.profile ]] && source ~/.profile 
 
 if [[ -d "$HOME/.nix-profile/share/zsh/site-functions/" ]]; then
@@ -29,6 +29,8 @@ setopt HIST_IGNORE_ALL_DUPS
 
 # Auto-sync history between concurrent sessions.
 setopt SHARE_HISTORY
+
+bindkey '^O' accept-line-and-down-history
 
 # Install zinit if not installed
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
