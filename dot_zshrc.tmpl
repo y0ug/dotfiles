@@ -108,7 +108,8 @@ zinit wait lucid light-mode nocompile run-atpull atpull"%atclone" as"completion"
   has"rustup" id-as"rustup-completion"  atclone"rustup completions zsh > _rustup && rustup completions zsh cargo > _cargo"  multisrc"_rustup|_cargo" @zdharma-continuum/null \
   has"gh" id-as"gh-completion" atclone"gh -s zsh completion > _gh"  src"_gh" @zdharma-continuum/null \
   has"chezmoi" id-as"chezmoi-completion"  atclone"chezmoi completion zsh > _chezmoi"  src"_chezmoi" @zdharma-continuum/null  \
-  has"bw" id-as"bw-completion" atclone"bw completion --shell zsh > _bw" src"_bw"  @zdharma-continuum/null 
+  has"bw" id-as"bw-completion" atclone"bw completion --shell zsh > _bw" src"_bw"  @zdharma-continuum/null  \
+  has"ai-helper" id-as"ai-helper-completion" atclone"ai-helper -completion zsh > _ai_helper" src"_ai_helper"  @zdharma-continuum/null 
   # has"gh" id-as"gh-copilot-alias" atclone"gh copilot alias -- zsh > gh_copilot_alias.sh" as"null" pick"gh_copilot_alias.sh" @zdharma-continuum/null \
 
 # direnv for nixos
