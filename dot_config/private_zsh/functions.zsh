@@ -138,6 +138,7 @@ git_new_release() {
   echo "Fetching tags from remote..."
   git fetch --tags || error "Failed to fetch tags." && return 1
 
+  echo "Foo"
   # Get the latest tag matching the pattern vX.Y.Z
   latest_tag=$(git describe --tags `git rev-list --tags --max-count=1` 2>/dev/null) || error "No tags found in the repository." && return 1
 
