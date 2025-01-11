@@ -136,7 +136,7 @@ git_new_release() {
 
   # Fetch all tags from the remote repository
   echo "Fetching tags from remote..."
-  git fetch --tags || error "Failed to fetch tags." && return 1
+  # git fetch --tags || error "Failed to fetch tags." && return 1
 
   echo "Foo"
   # Get the latest tag matching the pattern vX.Y.Z
