@@ -94,5 +94,5 @@ copy_file() {
 }
 
 getmarkdown() {
-  curl -X GET "https://fuckyeahmarkdown.com/api/2/?url=$1&readability=1&inline=0&json=1&link=url&format=markdown_mmd" | jq --raw-output .markup"
+  curl -X GET "https://fuckyeahmarkdown.com/api/2/?url=$1&readability=1&inline=0&json=1&link=url&format=markdown_mmd" | jq --raw-output .markup
 }
