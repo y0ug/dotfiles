@@ -31,6 +31,13 @@ setopt HIST_IGNORE_ALL_DUPS
 setopt SHARE_HISTORY
 
 bindkey '^O' accept-line-and-down-history
+bindkey '^P' up-line-or-history
+bindkey '^N' down-line-or-history
+bindkey '^A' beginning-of-line
+bindkey '^E' end-of-line
+bindkey '^U' backward-kill-line
+bindkey '^K' forward-kill-line
+bindkey '\ed' kill-word
 
 # Install zinit if not installed
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
