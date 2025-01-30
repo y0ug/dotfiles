@@ -30,14 +30,14 @@ setopt HIST_IGNORE_ALL_DUPS
 # Auto-sync history between concurrent sessions.
 setopt SHARE_HISTORY
 
-bindkey '^O' accept-line-and-down-history
-bindkey '^P' up-line-or-history
-bindkey '^N' down-line-or-history
-bindkey '^A' beginning-of-line
-bindkey '^E' end-of-line
-bindkey '^U' backward-kill-line
-bindkey '^K' forward-kill-line
-bindkey '\ed' kill-word
+bindkey -M viins '^O' accept-line-and-down-history
+bindkey -M viins '^P' up-line-or-history
+bindkey -M viins '^N' down-line-or-history
+bindkey -M viins '^A' beginning-of-line
+bindkey -M viins '^E' end-of-line
+bindkey -M viins '^U' backward-kill-line
+bindkey -M viins '^K' forward-kill-line
+bindkey -M viins '\ed' kill-word
 
 # Install zinit if not installed
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
