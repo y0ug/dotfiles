@@ -40,6 +40,8 @@ bindkey -M viins '^U' backward-kill-line
 bindkey -M viins '^K' kill-line
 bindkey -M viins '\ed' kill-word
 
+bindkey '^Y' autosuggest-accept
+
 # Install zinit if not installed
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 if [[ ! -f ${ZINIT_HOME}/zinit.zsh ]]; then
