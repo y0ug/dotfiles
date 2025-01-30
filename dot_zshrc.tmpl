@@ -60,10 +60,10 @@ zinit light zdharma-continuum/zinit-annex-bin-gem-node
 #
 # Load core plugins with zinit
 zinit wait lucid light-mode for \
-  atinit"zicompinit; zicdreplay" \
-      zdharma-continuum/fast-syntax-highlighting \
   atload"_zsh_autosuggest_start" \
       zsh-users/zsh-autosuggestions \
+  atinit"zicompinit; zicdreplay" \
+      zdharma-continuum/fast-syntax-highlighting \
   blockf atpull'zinit creinstall -q .' \
       zsh-users/zsh-completions 
   # jeffreytse/zsh-vi-mode # slow plugin
