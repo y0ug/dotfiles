@@ -145,11 +145,12 @@ fi
 {{ if .is_work }}
   # work config
 {{ else if .is_home }}
-zinit wait lucid for \
-  atinit"zstyle :omz:plugins:ssh-agent identities id_ed25519" OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh 
+# zinit wait lucid for \
+#   atinit"zstyle :omz:plugins:ssh-agent identities id_ed25519" OMZ::plugins/ssh-agent/ssh-agent.plugin.zsh 
   # OMZ::lib/clipboard.zsh \
   # OMZ::lib/history.zsh 
   # OMZ::plugins/vscode/vscode.plugin.zsh
+zinit light laggardkernel/zsh-gpg-agent
 
 #### VSCode integration
 zinit wait lucid light-mode run-atpull atpull"%atclone" blockf for \
