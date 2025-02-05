@@ -104,6 +104,7 @@ def main():
     parser.add_argument('--list', action='store_true', help='List all items')
     parser.add_argument('--select', action='store_true', help='Use fuzzel to select an item')
     parser.add_argument('--format', help='Custom format for listing (e.g., "{name}\t{type}")')
+    parser.add_argument('-j', '--json', action='store_true', help='Output raw JSON for the item')
     
     args = parser.parse_args()
     
@@ -127,6 +128,10 @@ def main():
             print(f"No matches found for '{args.search}'", file=sys.stderr)
             sys.exit(1)
         item = matches[0]
+    
+    if args.json:
+        print(json.dumps(item, indent=2))
+        sys.exit(0)
     
     fields = args.fields.split(',') if args.fields else ['id']
     result = {field: get_item_value(item, field) for field in fields}
