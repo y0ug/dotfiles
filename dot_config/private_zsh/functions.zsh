@@ -57,6 +57,8 @@ copy_file() {
                 clip_cmd="xclip -selection clipboard"
             elif command -v xsel >/dev/null 2>&1; then
                 clip_cmd="xsel --clipboard --input"
+            elif command -v wp-copy >/dev/null 2>&1; then
+                clip_cmd="wp-copy"
             else
                 echo "Error: Please install xclip or xsel for clipboard support"
                 return 1
