@@ -79,15 +79,19 @@ def item_to_string(item):
         item_username = item['login'].get('username', '')
     return f"{item['name']}\t{item_type}\t{item_username}\t{item['id']}"
 
-def select_with_fuzzel(items):
+def select_with_menu(items):
     items_str = '\n'.join(item_to_string(item)
                          for item in items)
+    
+    # Get the selection command from environment variable or default to fzf
+    select_cmd = os.environ.get('BWC_SELECT', 'fzf').split()
+    
     try:
-        result = subprocess.run(['fuzzel', '--dmenu'], input=items_str.encode(), capture_output=True)
+        result = subprocess.run(select_cmd, input=items_str.encode(), capture_output=True)
         if result.returncode == 0:
             return result.stdout.decode().strip().split('\t')[-1]  # Return the ID
     except FileNotFoundError:
-        print("Error: fuzzel not found", file=sys.stderr)
+        print(f"Error: {select_cmd[0]} not found", file=sys.stderr)
         sys.exit(1)
     return None
 
@@ -97,7 +101,33 @@ def get_item_by_id(items, item_id):
             return item
     return None
 
+def check_dependencies():
+    # Check for BW_SESSION
+    if 'BW_SESSION' not in os.environ:
+        print("Error: BW_SESSION environment variable not set. Please log in using 'bw login' and set BW_SESSION", 
+              file=sys.stderr)
+        sys.exit(1)
+    
+    # Check for bw command
+    try:
+        subprocess.run(['bw', '--version'], capture_output=True)
+    except FileNotFoundError:
+        print("Error: 'bw' command not found. Please install the Bitwarden CLI", file=sys.stderr)
+        sys.exit(1)
+
+# Check vault status
+    try:
+        status = json.loads(subprocess.check_output(['bw', 'status']).decode())
+        if status.get('status') != "unlocked":
+            print("Error: Bitwarden vault is locked. Please unlock using 'bw unlock'", file=sys.stderr)
+            sys.exit(1)
+    except (subprocess.CalledProcessError, json.JSONDecodeError):
+        print("Error: Failed to get Bitwarden status", file=sys.stderr)
+        sys.exit(1)
+
 def main():
+    check_dependencies()
+
     parser = argparse.ArgumentParser(description='Bitwarden credential fetcher')
     parser.add_argument('search', nargs='?', help='Search term for credential')
     parser.add_argument('--fields', help='Comma-separated list of fields to return')
@@ -115,7 +145,7 @@ def main():
         sys.exit(0)
     
     if args.select:
-        selected_id = select_with_fuzzel(items)
+        selected_id = select_with_menu(items)
         if not selected_id:
             sys.exit(1)
         item = get_item_by_id(items, selected_id)
