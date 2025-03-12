@@ -1,0 +1,32 @@
+#!/bin/zsh
+#
+# .zsh_plugins.txt - antidote plugins file
+#
+jeffreytse/zsh-vi-mode
+
+# Completions
+mattmc3/ez-compinit
+zsh-users/zsh-completions kind:fpath path:src
+aloxaf/fzf-tab  # Remove if you don't use fzf
+
+# Completion styles
+belak/zsh-utils path:completion/functions kind:autoload post:compstyle_zshzoo_setup
+
+# Keybindings
+belak/zsh-utils path:editor
+
+# History
+belak/zsh-utils path:history 
+
+# Prompt
+romkatv/powerlevel10k
+
+# Utilities
+zshzoo/macos conditional:is-macos kind:defer
+belak/zsh-utils path:utility  kind:defer
+romkatv/zsh-bench kind:path
+
+# Other Fish-like features
+zdharma-continuum/fast-syntax-highlighting  kind:defer
+zsh-users/zsh-autosuggestions kind:defer
+zsh-users/zsh-history-substring-search kind:defer

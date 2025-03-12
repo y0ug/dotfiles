@@ -1,0 +1,11 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = https://github.com/getantidote/zdotdir
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "kickstart"]
+	remote = origin
+	merge = refs/heads/kickstart

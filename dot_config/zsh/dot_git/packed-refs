@@ -1,0 +1,11 @@
+# pack-refs with: peeled fully-peeled sorted 
+7cb94c0dca2aec6106010afda0b8ceed6ffffe0f refs/remotes/origin/advanced
+9596e7ca943b8ca88749888bca607ef99f549cf5 refs/remotes/origin/benchmark-against-zinit
+4d355c6e6849057eab0685be7dc20c1080615e34 refs/remotes/origin/demo-antidote-issue-100
+0b479a31da264f3acb6ca2ada1f501e096aef270 refs/remotes/origin/demo-antidote-issue-144
+a7db85ce328f254a2788efe9f22a6ac1fb018061 refs/remotes/origin/demo-ez-compinit-issue-4
+0a4e83f62227312a0957d7dd4242d26ef057e64a refs/remotes/origin/issue-000
+7c4806e25132cccd0bee3db17847186f68e7b411 refs/remotes/origin/issue-196
+24ca6cc7435c39618132919f3afad22adb6e930a refs/remotes/origin/kickstart
+24ca6cc7435c39618132919f3afad22adb6e930a refs/remotes/origin/main
+966414fac36ad4bf5aa25f8689647bd78b099166 refs/remotes/origin/ohmyzsh
