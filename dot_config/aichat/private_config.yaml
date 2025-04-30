@@ -1,0 +1,39 @@
+# see https://github.com/sigoden/aichat/blob/main/config.example.yaml
+auto_copy: false
+
+stream: true
+save: true
+
+wrap: auto
+wrap_code: true
+
+highlight: false
+light_theme: true
+keybindings: vim
+
+# Visit https://github.com/sigoden/llm-functions for setup instructions
+function_calling: true # Enables or disables function calling (Globally).
+mapping_tools: # Alias for a tool or toolset
+  fs: "fs_cat,fs_ls,fs_mkdir,fs_rm,fs_write"
+use_tools: null # Which tools to use by default
+
+# model: gemini:gemini-2.5-pro-exp-03-25
+model: claude:claude-3-7-sonnet-20250219
+clients:
+  - type: claude
+  - type: openai
+    api_base: https://api.openai.com/v1
+  - type: gemini
+    api_base: https://generativelanguage.googleapis.com/v1beta
+  - type: openai-compatible
+    name: xai
+    api_base: https://api.x.ai/v1
+  - type: openai-compatible
+    name: groq
+    api_base: https://api.groq.com/openai/v1
+  - type: openai-compatible
+    name: deepseek
+    api_base: https://api.deepseek.com
+  - type: openai-compatible
+    name: openrouter
+    api_base: https://openrouter.ai/api/v1
