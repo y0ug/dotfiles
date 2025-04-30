@@ -1,0 +1,15 @@
+customCommands:
+  - key: <c-a>
+    description: Pick AI commit
+    command: git diff --cached | aichat -r commit - | git commit -F - -e
+    context: files
+    subprocess: true
+    showOutput: true
+  - key: <c-n>
+    description: Pick AI commit (no verify)
+    command: git diff --cached | aichat -r commit - | git commit -F -
+    context: files
+    subprocess: true
+  - key: "e"
+    command: 'echo git show "{{.SelectedCommit.Hash}}:{{.SelectedPath}}" | wl-copy'
+    context: "commitFiles"
