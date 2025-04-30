@@ -5,39 +5,46 @@ import argparse
 import sys
 import os
 
+
 def get_items():
     try:
-        return json.loads(subprocess.check_output(['bw', 'list', 'items']).decode())
+        return json.loads(subprocess.check_output(["bw", "list", "items"]).decode())
     except subprocess.CalledProcessError:
         print("Error: Failed to get items from Bitwarden", file=sys.stderr)
         sys.exit(1)
 
+
 def get_item_value(item, field):
     # Handle login fields
-    if 'login' in item and item['login']:
-        if field == 'username':
-            return item['login'].get('username', '')
-        elif field == 'password':
-            return item['login'].get('password', '')
-        elif field == 'otp' and item['login'].get('totp'):
+    if "login" in item and item["login"]:
+        if field == "username":
+            return item["login"].get("username", "")
+        elif field == "password":
+            return item["login"].get("password", "")
+        elif field == "otp" and item["login"].get("totp"):
             try:
-                return subprocess.check_output(['bw', 'get', 'totp', item['id']]).decode().strip()
+                return (
+                    subprocess.check_output(["bw", "get", "totp", item["id"]])
+                    .decode()
+                    .strip()
+                )
             except subprocess.CalledProcessError:
-                return ''
-    
+                return ""
+
     # Handle custom fields
-    if 'fields' in item and item['fields']:
-        for custom_field in item['fields']:
-            if custom_field['name'].lower() == field.lower():
-                return custom_field['value']
-    
+    if "fields" in item and item["fields"]:
+        for custom_field in item["fields"]:
+            if custom_field["name"].lower() == field.lower():
+                return custom_field["value"]
+
     # Handle basic fields
-    if field == 'id':
-        return item['id']
-    elif field == 'name':
-        return item['name']
-    
-    return ''
+    if field == "id":
+        return item["id"]
+    elif field == "name":
+        return item["name"]
+
+    return ""
+
 
 def list_items(items, format_string=None):
     if format_string:
@@ -45,20 +52,20 @@ def list_items(items, format_string=None):
             try:
                 # Get basic item info
                 data = {
-                    'name': item['name'],
-                    'id': item['id'],
-                    'type': 'login' if 'login' in item and item['login'] else 'note'
+                    "name": item["name"],
+                    "id": item["id"],
+                    "type": "login" if "login" in item and item["login"] else "note",
                 }
-                
+
                 # Add login fields if they exist
-                if 'login' in item and item['login']:
-                    data['username'] = item['login'].get('username', '')
-                
+                if "login" in item and item["login"]:
+                    data["username"] = item["login"].get("username", "")
+
                 # Add custom fields
-                if 'fields' in item and item['fields']:
-                    for field in item['fields']:
-                        data[field['name'].lower()] = field['value']
-                
+                if "fields" in item and item["fields"]:
+                    for field in item["fields"]:
+                        data[field["name"].lower()] = field["value"]
+
                 print(format_string.format(**data))
             except KeyError as e:
                 print(f"Invalid format key: {e}", file=sys.stderr)
@@ -66,84 +73,104 @@ def list_items(items, format_string=None):
     else:
         # Default format: name<tab>type<tab>id
         for item in items:
-            item_type = 'login' if 'login' in item and item['login'] else 'note'
+            item_type = "login" if "login" in item and item["login"] else "note"
             item_username = ""
-            if item_type == 'login':
-                item_username = item['login'].get('username', '')
+            if item_type == "login":
+                item_username = item["login"].get("username", "")
             print(item_to_string(item))
 
+
 def item_to_string(item):
-    item_type = 'login' if 'login' in item and item['login'] else 'note'
+    item_type = "login" if "login" in item and item["login"] else "note"
     item_username = ""
-    if item_type == 'login':
-        item_username = item['login'].get('username', '')
+    if item_type == "login":
+        item_username = item["login"].get("username", "")
     return f"{item['name']}\t{item_type}\t{item_username}\t{item['id']}"
 
+
 def select_with_menu(items):
-    items_str = '\n'.join(item_to_string(item)
-                         for item in items)
-    
+    items_str = "\n".join(item_to_string(item) for item in items)
+
     # Get the selection command from environment variable or default to fzf
-    select_cmd = os.environ.get('BWC_SELECT', 'fzf').split()
-    
+    select_cmd = os.environ.get("BWC_SELECT", "fzf").split()
+
     try:
-        result = subprocess.run(select_cmd, input=items_str.encode(), capture_output=True)
+        result = subprocess.run(
+            select_cmd, input=items_str.encode(), capture_output=True
+        )
         if result.returncode == 0:
-            return result.stdout.decode().strip().split('\t')[-1]  # Return the ID
+            return result.stdout.decode().strip().split("\t")[-1]  # Return the ID
     except FileNotFoundError:
         print(f"Error: {select_cmd[0]} not found", file=sys.stderr)
         sys.exit(1)
     return None
 
+
 def get_item_by_id(items, item_id):
     for item in items:
-        if item['id'] == item_id:
+        if item["id"] == item_id:
             return item
     return None
 
+
 def check_dependencies():
     # Check for BW_SESSION
-    if 'BW_SESSION' not in os.environ:
-        print("Error: BW_SESSION environment variable not set. Please log in using 'bw login' and set BW_SESSION", 
-              file=sys.stderr)
-        sys.exit(1)
-    
-    # Check for bw command
-    try:
-        subprocess.run(['bw', '--version'], capture_output=True)
-    except FileNotFoundError:
-        print("Error: 'bw' command not found. Please install the Bitwarden CLI", file=sys.stderr)
+    if "BW_SESSION" not in os.environ:
+        print(
+            "Error: BW_SESSION environment variable not set. Please log in using 'bw login' and set BW_SESSION",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
-# Check vault status
+    # Check for bw command
     try:
-        status = json.loads(subprocess.check_output(['bw', 'status']).decode())
-        if status.get('status') != "unlocked":
-            print("Error: Bitwarden vault is locked. Please unlock using 'bw unlock'", file=sys.stderr)
+        subprocess.run(["bw", "--version"], capture_output=True)
+    except FileNotFoundError:
+        print(
+            "Error: 'bw' command not found. Please install the Bitwarden CLI",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    # Check vault status
+    try:
+        status = json.loads(subprocess.check_output(["bw", "status"]).decode())
+        if status.get("status") != "unlocked":
+            print(
+                "Error: Bitwarden vault is locked. Please unlock using 'bw unlock'",
+                file=sys.stderr,
+            )
             sys.exit(1)
     except (subprocess.CalledProcessError, json.JSONDecodeError):
         print("Error: Failed to get Bitwarden status", file=sys.stderr)
         sys.exit(1)
 
+
 def main():
     check_dependencies()
 
-    parser = argparse.ArgumentParser(description='Bitwarden credential fetcher')
-    parser.add_argument('search', nargs='?', help='Search term for credential')
-    parser.add_argument('--fields', help='Comma-separated list of fields to return')
-    parser.add_argument('--list', action='store_true', help='List all items')
-    parser.add_argument('--select', action='store_true', help='Use fuzzel to select an item')
-    parser.add_argument('--format', help='Custom format for listing (e.g., "{name}\t{type}")')
-    parser.add_argument('-j', '--json', action='store_true', help='Output raw JSON for the item')
-    
+    parser = argparse.ArgumentParser(description="Bitwarden credential fetcher")
+    parser.add_argument("search", nargs="?", help="Search term for credential")
+    parser.add_argument("--fields", help="Comma-separated list of fields to return")
+    parser.add_argument("--list", action="store_true", help="List all items")
+    parser.add_argument(
+        "--select", action="store_true", help="Use fuzzel to select an item"
+    )
+    parser.add_argument(
+        "--format", help='Custom format for listing (e.g., "{name}\t{type}")'
+    )
+    parser.add_argument(
+        "-j", "--json", action="store_true", help="Output raw JSON for the item"
+    )
+
     args = parser.parse_args()
-    
+
     items = get_items()
-    
+
     if args.list:
         list_items(items, args.format)
         sys.exit(0)
-    
+
     if args.select:
         selected_id = select_with_menu(items)
         if not selected_id:
@@ -153,24 +180,27 @@ def main():
         if not args.search:
             print("Error: either --select or search term is required", file=sys.stderr)
             sys.exit(1)
-        matches = [item for item in items if args.search.lower() in item['name'].lower()]
+        matches = [
+            item for item in items if args.search.lower() in item["name"].lower()
+        ]
         if not matches:
             print(f"No matches found for '{args.search}'", file=sys.stderr)
             sys.exit(1)
         item = matches[0]
-    
+
     if args.json:
         print(json.dumps(item, indent=2))
         sys.exit(0)
-    
-    fields = args.fields.split(',') if args.fields else ['id']
+
+    fields = args.fields.split(",") if args.fields else ["id"]
     result = {field: get_item_value(item, field) for field in fields}
-    
+
     if len(fields) == 1:
         print(result[fields[0]])
     else:
         for key, value in result.items():
             print(f"export BW_{key.upper()}='{value}'")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

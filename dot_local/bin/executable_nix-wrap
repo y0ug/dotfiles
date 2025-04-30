@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+prog=$(basename "$0")
+exec nix-shell -p "$prog" --command "$prog $*"
