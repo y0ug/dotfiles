@@ -7,4 +7,5 @@ scripts/
 .ssh/id_rsa
 .ssh/deploymazenet_id_ed25519
 .config/aichat/message.md
+.config/chezmoi/key.txt
 {{- end }}
