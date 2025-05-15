@@ -2,11 +2,16 @@ return {
   {
     "saghen/blink.cmp",
     opts = {
+      cmdline = {
+        keymap = { preset = "inherit" },
+        completion = { menu = { auto_show = true } },
+      },
+      keymap = {
+        preset = "default",
+      },
+      signature = { enabled = true },
       sources = {
         default = { "lsp", "path", "buffer", "snippets" },
-        --   keymap = {
-        --     preset = "default",
-        --    },
         --
         per_filetype = {
           markdown = { "lsp", "path", "buffer" },
