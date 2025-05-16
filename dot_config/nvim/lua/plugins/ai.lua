@@ -103,9 +103,9 @@ return {
       "nvim-treesitter/nvim-treesitter",
     },
     keys = {
-      { "<leader>ac", ":CodeCompanionChat Toggle<cr>", desc = "codecompanion chat" },
-      { "<leader>as", "<cmd>CodeCompanion</cmd>", desc = "codecompanion selection", mode = { "v" } },
-      { "<leader>aa", ":CodeCompanionActions<cr>", desc = "codecompanion actions" },
+      { "<leader>ac", ":CodeCompanionChat Toggle<cr>", desc = "codecompanion chat", mode = { "v", "n" } },
+      { "<leader>as", "<cmd>CodeCompanion<cr>", desc = "codecompanion selection", mode = { "v" } },
+      { "<leader>aa", ":CodeCompanionActions<cr>", desc = "codecompanion actions", mode = { "v", "n" } },
     },
   },
   {
