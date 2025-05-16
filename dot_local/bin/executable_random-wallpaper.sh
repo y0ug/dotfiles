@@ -9,8 +9,7 @@ setup() {
   cat <<'EOF_1738964388_12111' >"$HOME/.config/systemd/user/random-wallpaper.service"
 [Unit]
 Description=Random Wallpaper Service
-After=graphical-session.target
-[Service]
+After=graphical-session.target [Service]
 Type=oneshot
 ExecStart=%h/.local/bin/random-wallpaper.sh
 # Environment= 
@@ -118,7 +117,7 @@ change_wallpaper() {
       brightness=$(calculate_brightness "$img")
 
       # Check if dark enough
-      if [ "$brightness" -lt "$DARK_THRESHOLD" ]; then
+      if [ "${brightness:-100000}" -lt "$DARK_THRESHOLD" ]; then
         WALLPAPER="$img"
         echo "Setting dark wallpaper: $(basename "$WALLPAPER") (Brightness: $brightness)"
         break
