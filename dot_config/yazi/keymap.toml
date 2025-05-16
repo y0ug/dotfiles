@@ -1,0 +1,25 @@
+# A TOML linter such as https://taplo.tamasfe.dev/ can use this schema to validate your config.
+# If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
+"$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
+
+[manager]
+prepend_keymap = [
+  # glow.yazi
+  { on = [
+    "<C-e>",
+  ], run = "seek 5" },
+  { on = [
+    "<C-y>",
+  ], run = "seek -5" },
+  { on = [
+    "M",
+  ], run = "plugin mount" },
+  { on = "<Enter>", run = "plugin smart-enter", desc = "Enter the child directory, or open the file" },
+  { on = "F", run = "plugin smart-filter", desc = "Smart filter" },
+  { on = "p", run = "plugin smart-paste", desc = "Paste into the hovered directory or CWD" },
+  { on = "<C-y>", run = "plugin system-clipboaraaaad" },
+  { on = [
+    ".",
+    "s",
+  ], run = "plugin what-size", desc = "Calc size of selection or cwd" },
+]
