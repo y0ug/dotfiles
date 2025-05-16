@@ -1,7 +1,7 @@
 return {
   {
     "joshuavial/aider.nvim",
-    enable = false,
+    enabled = false,
     opts = {
       auto_manage_context = true, -- automatically manage buffer context
       default_bindings = true, -- use default <leader>A keybindings
@@ -9,23 +9,34 @@ return {
     },
   },
   {
-    "YounesElhjouji/nvim-copy",
-    lazy = true, -- ensures the plugin is loaded on startup
-    commit = "529fe48",
-    config = function()
-      require("nvim_copy").setup({
-        ignore = {
-          "*node_modules/*",
-          "*__pycache__/*",
-          "*.git/*",
-          "*dist/*",
-          "*build/*",
-          "*.log",
+    "monkoose/neocodeium",
+    enabled = false,
+    event = "VeryLazy",
+    opts = {
+      completion = {
+        menu = {
+          auto_show = function(ctx)
+            return ctx.mode ~= "default"
+          end,
         },
+      },
+    },
+    config = function(_, opts)
+      local neocodeium = require("neocodeium")
+      local blink = require("blink.cmp")
+      neocodeium.setup(opts)
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "BlinkCmpMenuOpen",
+        callback = function()
+          neocodeium.clear()
+        end,
       })
 
-      -- Optional key mappings:
-      vim.api.nvim_set_keymap("n", "<leader>cb", ":CopyBuffersToClipboard<CR>", { noremap = true, silent = true })
+      neocodeium.setup({
+        filter = function()
+          return not blink.is_visible()
+        end,
+      })
     end,
   },
   {

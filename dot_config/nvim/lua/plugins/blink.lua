@@ -19,11 +19,11 @@ return {
           -- svelte = { "path" },
         },
         providers = {
-          copilot = {
-            enabled = function()
-              return not vim.tbl_contains({ "markdown" }, vim.bo.filetype)
-            end,
-          },
+          -- copilot = {
+          --   enabled = function()
+          --     return not vim.tbl_contains({ "markdown" }, vim.bo.filetype)
+          --   end,
+          -- },
           cmdline = { enabled = true },
         },
       },
