@@ -3,8 +3,8 @@
 # If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
 "$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
 [manager]
-# ratio = [0, 4, 4]
-ratio = [2, 4, 3]
+ratio = [0, 4, 4]
+# ratio = [2, 4, 3]
 
 [opener]
 edit = [

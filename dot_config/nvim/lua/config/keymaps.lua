@@ -7,15 +7,24 @@ end)
 vim.keymap.set({ "i", "s" }, "<c-i>", function()
   vim.snippet.jump(-1)
 end)
-
--- vim.keymap.set({ "i", "x", "v", "n" }, "<f1>", function() end)
 --
+
+-- remap hjkl to jkl; for basic movement and invert up/down
+-- vim.opt.langmap = "jh,kj,lk,\\;l,h\\;"
+-- vim.keymap.set({ "n", "v" }, "j", "k", { desc = "Move up (inverted)" })
+-- vim.keymap.set({ "n", "v" }, "k", "j", { desc = "Move down (inverted)" })
+-- remap move window using the <ctrl>
+-- vim.keymap.set("n", "<C-j>", "<C-w>h", { desc = "Go to Left Window", remap = true })
+-- vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to Lower Window", remap = true })
+-- vim.keymap.set("n", "<C-l>", "<C-w>j", { desc = "Go to Upper Window", remap = true })
+-- vim.keymap.set("n", "<C-\"<C-w>l", { desc = "Go to Right Window", remap = true })
+
 local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
 
 -- Repeat movement with ; and ,
 -- ensure ; goes forward and , goes backward regardless of the last direction
-vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
-vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
+-- vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
+-- vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
 
 -- vim way: ; goes to the direction you were moving.
 -- vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move)
@@ -27,12 +36,12 @@ vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
 -- vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat_move.builtin_t_expr, { expr = true })
 
 -- Move Lines disable hack for tmux/neovim bug
-vim.keymap.del("i", "<A-k>")
-vim.keymap.del("i", "<A-j>")
-vim.keymap.del("n", "<A-k>")
-vim.keymap.del("n", "<A-j>")
-vim.keymap.del("v", "<A-k>")
-vim.keymap.del("v", "<A-j>")
+-- vim.keymap.del("i", "<A-k>")
+-- vim.keymap.del("i", "<A-j>")
+-- vim.keymap.del("n", "<A-k>")
+-- vim.keymap.del("n", "<A-j>")
+-- vim.keymap.del("v", "<A-k>")
+-- vim.keymap.del("v", "<A-j>")
 -- map("n", "<A-j>", "<esc>j", { desc = "Move down" })
 -- map("i", "<A-k>", "<esc>gk", { desc = "Move up" })
 -- map("i", "<A-j>", "<esc>gj", { desc = "Move down" })
