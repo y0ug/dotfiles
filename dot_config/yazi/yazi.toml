@@ -2,7 +2,7 @@
 # A TOML linter such as https://taplo.tamasfe.dev/ can use this schema to validate your config.
 # If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
 "$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
-[manager]
+[mgr]
 ratio = [0, 4, 4]
 # ratio = [2, 4, 3]
 
@@ -13,7 +13,7 @@ edit = [
   { run = 'code -w %*', block = true, desc = "code (block)", for = "windows" },
 ]
 open = [
-  { run = 'xdg-open "$1"', desc = "Open", for = "linux" },
+  { run = 'open-with "$1" fuzzel', desc = "Open", for = "linux" },
   { run = 'open "$@"', desc = "Open", for = "macos" },
   { run = 'start "" "%1"', orphan = true, desc = "Open", for = "windows" },
   { run = 'termux-open "$1"', desc = "Open", for = "android" },

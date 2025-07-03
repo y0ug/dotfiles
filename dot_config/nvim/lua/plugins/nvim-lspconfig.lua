@@ -25,6 +25,16 @@ return {
           },
         },
       },
+      harper_ls = {
+        autostart = false,
+        settings = {
+          ["harper-ls"] = {
+            linters = {
+              SpellCheck = true,
+            },
+          },
+        },
+      },
     },
   },
 }

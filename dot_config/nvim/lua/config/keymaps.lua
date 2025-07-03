@@ -8,6 +8,31 @@ vim.keymap.set({ "i", "s" }, "<c-i>", function()
   vim.snippet.jump(-1)
 end)
 --
+-- Emacs shortcuts
+vim.keymap.set("i", "<C-a>", "<ESC>I")
+vim.keymap.set("n", "<C-a>", "^")
+vim.keymap.set("i", "<C-e>", "<ESC>A")
+vim.keymap.set("n", "<C-e>", "$")
+vim.keymap.set("i", "<M-b>", "<Esc>Bi")
+vim.keymap.set("i", "<M-f>", "lWi")
+
+-- CUA shortcuts
+-- meta(alt)-left/right moves across words
+vim.keymap.set({ "n", "v", "o" }, "<M-Left>", "B")
+vim.keymap.set({ "n", "v", "o" }, "<M-Right>", "W")
+vim.keymap.set({ "n", "v", "o" }, "<M-Up>", "{")
+vim.keymap.set({ "n", "v", "o" }, "<M-Down>", "}")
+
+vim.keymap.set("i", "<C-BS>", "<C-w>")
+vim.keymap.set("c", "<C-BS>", "<C-w>")
+vim.keymap.set("i", "<C-H>", "<C-w>") -- using Ctrl+Backspace delete a word. ref:https://www.reddit.com/r/neovim/comments/prp8zw/using_ctrlbackspace_in_neovim/
+vim.keymap.set("c", "<C-H>", "<C-w>")
+
+-- stop accidentally pressing q
+vim.keymap.set("n", "Q", "q", { noremap = true, desc = "Record macro" })
+vim.keymap.set("n", "q", "<nop>", { noremap = true })
+
+vim.keymap.set("n", "<leader>fl", ":luafile %<CR>", { noremap = true, silent = true, desc = "Reload current file" })
 
 -- remap hjkl to jkl; for basic movement and invert up/down
 -- vim.opt.langmap = "jh,kj,lk,\\;l,h\\;"
@@ -42,21 +67,6 @@ local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
 -- vim.keymap.del("n", "<A-j>")
 -- vim.keymap.del("v", "<A-k>")
 -- vim.keymap.del("v", "<A-j>")
--- map("n", "<A-j>", "<esc>j", { desc = "Move down" })
--- map("i", "<A-k>", "<esc>gk", { desc = "Move up" })
--- map("i", "<A-j>", "<esc>gj", { desc = "Move down" })
--- map("v", "<A-k>", "<esc>gk", { desc = "Move up" })
--- map("v", "<A-j>", "<esc>gj", { desc = "Move down" })
---
-vim.keymap.set("i", "<C-BS>", "<C-w>")
-vim.keymap.set("c", "<C-BS>", "<C-w>")
-vim.keymap.set("i", "<C-H>", "<C-w>") -- using Ctrl+Backspace delete a word. ref:https://www.reddit.com/r/neovim/comments/prp8zw/using_ctrlbackspace_in_neovim/
-vim.keymap.set("c", "<C-H>", "<C-w>")
-
--- stop accidentally pressing q
-vim.keymap.set("n", "q", "<nop>", { noremap = true })
-vim.keymap.set("n", "Q", "q", { noremap = true, desc = "Record macro" })
-vim.keymap.set("n", "<M-q>", "Q", { noremap = true, desc = "Replay last register macro" })
 
 -- Repeat movement with ; and ,
 -- ensure ; goes forward and , goes backward regardless of the last direction
@@ -76,4 +86,3 @@ vim.keymap.set("n", "<M-q>", "Q", { noremap = true, desc = "Replay last register
 -- vim.keymap.set("n", "j", "<nop>")
 -- vim.keymap.set("n", "k", "<nop>")
 -- vim.keymap.set("n", "l", "<nop>")
-vim.keymap.set("n", "<leader>fl", ":luafile %<CR>", { noremap = true, silent = true, desc = "Reload current file" })

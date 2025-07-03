@@ -1,15 +1,37 @@
 customCommands:
-  - key: <c-a>
+  - key: "C"
+    command: '/home/rick/.claude/local/claude "Generate a git commit message on the first line and detailed body based on the staged changes. Describe the changes made in a way that helps someone reviewing change to understand what changed and why. Output only the commit message with no extra text." | git commit -F -'
+    context: "files"
+    description: "AI-generated commit with Claude Code"
+  - key: <c-n>
     description: Pick AI commit
     command: git diff --cached | aichat -r commit - | git commit -F - -e
     context: files
-    subprocess: true
-    showOutput: true
-  - key: <c-n>
+    output: terminal
+  - key: <c-c>
+    output: terminal
     description: Pick AI commit (no verify)
     command: git diff --cached | aichat -r commit - | git commit -F -
     context: files
-    subprocess: true
   - key: "e"
     command: 'echo git show "{{.SelectedCommit.Hash}}:{{.SelectedPath}}" | wl-copy'
     context: "commitFiles"
+  - key: "<c-a>"
+    description: "amend the author of last commit"
+    command: 'git commit --amend --author="Hugo Caron <hca433@gmail.com>"'
+    context: "commits"
+  - key: "<Delete>"
+    command: "trash-put {{.SelectedFile.Name | quote}}"
+    context: "files"
+    description: "Move file to trash"
+
+  # If you want to delete all untracked files/directories
+  # - key: "<Delete>"
+  #   command: "git ls-files --others --exclude-standard -z | xargs -0 -I {} trash-put {}"
+  #   context: "status"
+  #   description: "Move all untracked files to trash"
+  #   loadingText: "Moving untracked files to trash..."
+  #   prompts:
+  #     - type: "confirm"
+  #       title: "Delete all untracked files?"
+  #       body: "Are you sure you want to delete all untracked files and directories? This cannot be undone."

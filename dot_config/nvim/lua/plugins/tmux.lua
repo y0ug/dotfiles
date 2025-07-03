@@ -1,19 +1,23 @@
 return {
-  "christoomey/vim-tmux-navigator",
-  enabled = false,
+  "alexghergh/nvim-tmux-navigation",
+  enabled = true,
   cmd = {
-    "TmuxNavigateLeft",
-    "TmuxNavigateDown",
-    "TmuxNavigateUp",
-    "TmuxNavigateRight",
-    "TmuxNavigatePrevious",
-    "TmuxNavigatorProcessList",
+    "NvimTmuxNavigateLeft",
+    "NvimTmuxNavigateDown",
+    "NvimTmuxNavigateUp",
+    "NvimTmuxNavigateRight",
+    "NvimTmuxNavigateNext",
+    "NvimTmuxNavigateLastActive",
   },
   keys = {
-    { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
-    { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
-    { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
-    { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
-    { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
+    { "<c-h>", "<cmd>NvimTmuxNavigateLeft<cr>" },
+    { "<c-j>", "<cmd>NvimTmuxNavigateDown<cr>" },
+    { "<c-k>", "<cmd>NvimTmuxNavigateUp<cr>" },
+    { "<c-l>", "<cmd>NvimTmuxNavigateRight<cr>" },
+    { "<c-tab>", "<cmd>NvimTmuxNavigateLastActive<cr>" },
   },
+  config = function()
+    local tmux_nav = require("nvim-tmux-navigation")
+    tmux_nav.setup({ disable_when_zoomed = false })
+  end,
 }

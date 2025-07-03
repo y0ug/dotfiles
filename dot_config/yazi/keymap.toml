@@ -2,41 +2,41 @@
 # If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
 "$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on = ["<C-e>"]
 run = "seek 5"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on = ["<C-y>"]
 run = "seek -5"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on = ["M"]
 run = "plugin mount"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on = "<Enter>"
 run = "plugin smart-enter"
 desc = "Enter the child directory, or open the file"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on = "F"
 run = "plugin smart-filter"
 desc = "Smart filter"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on = "p"
 run = "plugin smart-paste"
 desc = "Paste into the hovered directory or CWD"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on = "<C-y>"
 run = "plugin system-clipboard"
 
-[[manager.prepend_keymap]]
-on = [".", "s"]
-run = "plugin what-size"
-desc = "Calc size of selection or cwd"
+# [[mgr.prepend_keymap]]
+# on = [".", "s"]
+# run = "plugin what-size"
+# desc = "Calc size of selection or cwd"
 
 # [[manager.prepend_keymap]]
 # on = ["'", "h"]
@@ -58,27 +58,27 @@ desc = "Calc size of selection or cwd"
 # run = "plugin relative-motions"
 # desc = "Trigger a new relative motion"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on = ["m"]
 run = "plugin bookmarks save"
 desc = "Save current position as a bookmark"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on = ["'"]
 run = "plugin bookmarks jump"
 desc = "Jump to a bookmark"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on = ["b", "d"]
 run = "plugin bookmarks delete"
 desc = "Delete a bookmark"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on = ["b", "D"]
 run = "plugin bookmarks delete_all"
 desc = "Delete all bookmarks"
 
-[[manager.prepend_keymap]]
+[[mgr.prepend_keymap]]
 on = "T"
 run = "plugin toggle-pane min-preview"
 desc = "Show or hide the preview pane"

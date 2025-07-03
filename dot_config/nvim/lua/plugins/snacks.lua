@@ -1,4 +1,8 @@
 vim.g.snacks_animate = false
+local include = {
+  ".github",
+  ".env*",
+}
 
 local excluded = {
   "node_modules/",
@@ -42,6 +46,7 @@ return {
         -- show files ignored by git like node_modules
         -- ignored = true,
 
+        include = include,
         -- exclude = excluded,
         ---@class snacks.picker.matcher.Config
         matcher = {

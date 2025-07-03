@@ -16,3 +16,12 @@ vim.api.nvim_create_user_command("Cppath", function()
   vim.fn.setreg("+", path)
   vim.notify('Copied "' .. path .. '" to the clipboard!')
 end, {})
+
+vim.api.nvim_create_autocmd("TextYankPost", {
+  callback = function()
+    -- Send to tmux buffer only for unnamed register operations
+    if vim.v.event.regname == "" then
+      vim.fn.system('tmux set-buffer "' .. vim.fn.escape(vim.fn.getreg('"'), '"\\') .. '"')
+    end
+  end,
+})
