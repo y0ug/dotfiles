@@ -1,6 +1,233 @@
-[init]
-  defaultBranch = main
+[core]
+    editor = nvim                    # or code, nano, emacs, etc.
+    autocrlf = input                # true on Windows, input on Mac/Linux
+    ignorecase = false
+    excludesfile = ~/.gitignore_global
+    ; pager = less -FRX
+    ; pager = delta 
 
+[init]
+    defaultBranch = main            # Use 'main' instead of 'master' for new repos
+
+[color]
+    ui = auto
+    branch = auto
+    diff = auto
+    status = auto
+
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+
+[color "status"]
+    added = green
+    changed = yellow
+    untracked = red
+
+; [include]
+;   path = ~/.gitalias
+    
+[push]
+    default = current               # Push current branch to remote with same name
+    autoSetupRemote = true         # Automatically set up remote tracking
+
+[pull]
+    rebase = true                   # Rebase instead of merge when pulling
+    ff = only                       # Fast-forward only
+
+[fetch]
+    prune = true                    # Remove deleted remote branches
+
+[merge]
+	tool = nvimdiff
+  conflictstyle = zdiff3           # Show original in merge conflicts
+
+[diff]
+	tool = nvimdiff
+  algorithm = histogram           # Better diff algorithm
+  colorMoved = default           # Highlight moved lines
+
+[difftool]
+  tool = nvimdiff 
+
+[rebase]
+    autoStash = true               # Automatically stash/unstash before/after rebase
+    autoSquash = true              # Automatically squash fixup! commits
+
+[rerere]
+  enabled = true
+  autoupdate = true
+
+[help]
+    autocorrect = 1                # Autocorrect typos (with 0.1 sec delay)
+
+[interactive]
+  diffFilter = delta --color-only
+
+[credential]
+    helper = cache --timeout=3600  # Cache credentials for 1 hour
+    # On macOS: helper = osxkeychain
+    # On Windows: helper = manager
+
+; [url "git@github.com:"]
+    ; insteadOf = https://github.com/  # Use SSH instead of HTTPS for GitHub
+
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+
+[includeIf "gitdir:~/projects/"]
+  path = ~/.gitconfig-personal
+
+[includeIf "gitdir:~/projects-caddy/"]
+  path = ~/.gitconfig-caddy-glow
+
+
+[delta]
+  navigate = true  # use n and N to move between diff sections
+  dark = false      # or light = true, or omit for auto-detection
+  ; features = mantis-shrimp-lite 
+  side-by-side = true
+  features = github #diff-so-fancy
+
+
+[difftool "nvimdiff"]
+	path = nvim
+[mergetool "nvimdiff"]
+	path = nvim
+
+[alias]
+  backup = "!f() { git branch backup/$(git symbolic-ref --short HEAD)-$(date +%Y%m%d-%H%M%S); }; f"
+  res = "restore --staged"
+  rmc = "rm --cached"
+  au = "!git add -u && git status"
+  auc = "!git au && git commit"
+  aac = "!git aa && read confirm && git commit"
+	reword = "!f() { if [ -z \"$1\" ]; then git commit --amend; else git rebase -i \"$1^\" && echo \"Mark the commit as reword in the editor\"; fi; }; f"
+	state = !git fetch origin && git remote show origin &h& :
+	remain = !git fetch origin main:main && git rebase main
+  wip = "!f() { git add -u && git commit -m \"WIP: ${1:-quick save} - $(date '+%Y-%m-%d %H:%M:%S')\" --no-verify; }; f"
+  co = !git checkout $(git branch | sed 's/^..//' | fzf)
+  cor = !git checkout $(git branch -a | sed 's/^..//' | sed 's|remotes/origin/||' | sort -u | fzf)
+  recent = !git checkout $(git for-each-ref --sort=-committerdate refs/heads/ --format='%(refname:short)' | fzf)   # Workflow chains
+
+  bd = "branch --delete"
+  bD = "branch -D"
+  sc = "switch -c"
+  s =  "switch"
+  bm =  "branch -m"
+  bM =  "branch -M"
+  unstage = reset HEAD --
+  
+  # Reset commits.
+  reset-commit       = reset --soft HEAD~1
+  reset-commit-hard  = reset --hard HEAD~1
+  reset-commit-hard-clean = !git reset --hard HEAD~1 && git clean -fd
+  reset-to-pristine  = !git reset --hard && git clean -ffdx
+  reset-to-upstream  = "!git reset --hard \"$(git upstream-branch)\""
+
+  # Undo commits.
+  undo-commit        = reset --soft HEAD~1
+  undo-commit-hard   = reset --hard HEAD~1
+  undo-commit-hard-clean  = !git reset --hard HEAD~1 && git clean -fd
+  undo-to-pristine   = !git reset --hard && git clean -ffdx
+  undo-to-upstream   = "!git reset --hard \"$(git upstream-branch)\""
+
+  # Nicknames
+  uncommit = reset --soft HEAD~1
+  unadd = reset HEAD
+
+  # Discard changes in a (list of) file(s) in working tree.
+  discard = checkout --
+
+  # Clean a working tree using more powerful options.
+  cleaner = clean -dff
+
+  # Clean a working tree using the most powerful options.
+  cleanest = clean -dffx
+
+  # Clean a working tree using typical options then checkout.
+  cleanout = !git clean -df && git checkout -- .
+
+  # Expunge a file everywhere; this command is typically for a serious problem,
+  # such as accidentally committing a file of sensitive data, such as passwords.
+  # After you use command, you will likely need to force push everything.
+  # See <https://help.github.com/articles/removing-sensitive-data-from-a-repository/>
+  expunge = "!f() { git filter-branch --force --index-filter \"git rm --cached --ignore-unmatch $1\" --prune-empty --tag-name-filter \"cat\" -- --all ; }; f"
+
+  # Show logs of unreachable commits.
+  # This can be useful, for example, when recovering contents of dropped stashes or reset commits.
+  show-unreachable = "!git fsck --unreachable | grep commit | cut -d\" \" -f3 | xargs git log"
+
+  ### add-* & edit-* - Handle files by kind ###
+
+  # Add all files of the given type
+  add-cached   = "!git add \"$(git ls-files --cached             | sort -u)\""
+  add-deleted  = "!git add \"$(git ls-files --deleted            | sort -u)\""
+  add-others   = "!git add \"$(git ls-files --others             | sort -u)\""
+  add-ignored  = "!git add \"$(git ls-files --ignored            | sort -u)\""
+  add-killed   = "!git add \"$(git ls-files --killed             | sort -u)\""
+  add-modified = "!git add \"$(git ls-files --modified           | sort -u)\""
+  add-stage    = "!git add \"$(git ls-files --stage    | cut -f2 | sort -u)\""
+  add-unmerged = "!git add \"$(git ls-files --unmerged | cut -f2 | sort -u)\""
+
+  # Edit all files of the given type
+  edit-cached   = "!$(git var GIT_EDITOR) \"$(git ls-files --cached             | sort -u)\""
+  edit-deleted  = "!$(git var GIT_EDITOR) \"$(git ls-files --deleted            | sort -u)\""
+  edit-others   = "!$(git var GIT_EDITOR) \"$(git ls-files --others             | sort -u)\""
+  edit-ignored  = "!$(git var GIT_EDITOR) \"$(git ls-files --ignored            | sort -u)\""
+  edit-killed   = "!$(git var GIT_EDITOR) \"$(git ls-files --killed             | sort -u)\""
+  edit-modified = "!$(git var GIT_EDITOR) \"$(git ls-files --modified           | sort -u)\""
+  edit-stage    = "!$(git var GIT_EDITOR) \"$(git ls-files --stage    | cut -f2 | sort -u)\""
+  edit-unmerged = "!$(git var GIT_EDITOR) \"$(git ls-files --unmerged | cut -f2 | sort -u)\""
+
+  # Ours & Theirs - Easy merging when you know which files you want
+  #
+  # Sometimes during a merge you want to take a file from one side wholesale.
+  #
+  # The following aliases expose the ours and theirs commands which let you
+  # pick a file(s) from the current branch or the merged branch respectively.
+  #
+  #   * git ours - Checkout our version of a file and add it
+  #
+  #   * git theirs - Checkout their version of a file and add it
+  #
+  # N.b. the function is there as hack to get $@ doing
+  # what you would expect it to as a shell user.
+  #
+
+  # Checkout our version of a file and add it.
+  ours   = "!f() { git checkout --ours   \"$@\" && git add \"$@\"; }; f"
+
+  # Checkout their version of a file and add it.
+  theirs = "!f() { git checkout --theirs \"$@\" && git add \"$@\"; }; f"
+
+  # Work In Progress - Easy tracking of what you're doing
+  #
+  # From <https://gist.github.com/492227> and VonC on stackoverflow.
+  #
+  # This enables a quick way to add all new and modified files to the index,
+  # while cleaning the index from the files removed from the working tree;
+  # this cleaning will facilitate a rebase, because there won't be any conflict
+  # due to an "unclean" working directory (not in sync with the index).
+
+  # Add files using the message "wip"
+  wip = "!git add --all; git ls-files --deleted -z | xargs -r -0 git rm; git commit --message=wip"
+
+  # Restore the deleted files to the working tree.
+  unwip = "!git log --max-count=1 | grep -q -c wip && git reset HEAD~1"
+	ignore-local = "!f() { \n  main_git_dir=$(git rev-parse --git-common-dir)\n  mkdir -p \"$main_git_dir/info\"\n  for file in \"$@\"; do \n    if ! grep -q \"^$file$\" \"$main_git_dir/info/exclude\" 2>/dev/null; then \n      echo \"$file\" >> \"$main_git_dir/info/exclude\"\n    fi\n  done\n}; f"
+	excludes = !cat \"$(git rev-parse --git-common-dir)/info/exclude\"
+	exclude = "!f() { \n  main_git_dir=$(git rev-parse --git-common-dir)\n  mkdir -p \"$main_git_dir/info\"\n  for file in \"$@\"; do \n    if ! grep -q \"^$file$\" \"$main_git_dir/info/exclude\" 2>/dev/null; then \n      echo \"$file\" >> \"$main_git_dir/info/exclude\"\n    fi\n  done\n}; f"
+	edit-exclude = !$EDITOR \"$(git rev-parse --git-common-dir)/info/exclude\"
 [user]
-	email = hca443@gmail.com
-	name = Hugo Caron
+	email = caddyglow@pm.me
