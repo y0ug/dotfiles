@@ -5,7 +5,8 @@
     excludesfile = ~/.gitignore_global
     ; pager = less -FRX
     ; pager = delta 
-
+[receive]
+  denyCurrentBranch = warn
 [init]
     defaultBranch = main            # Use 'main' instead of 'master' for new repos
 
@@ -225,9 +226,13 @@
 
   # Restore the deleted files to the working tree.
   unwip = "!git log --max-count=1 | grep -q -c wip && git reset HEAD~1"
-	ignore-local = "!f() { \n  main_git_dir=$(git rev-parse --git-common-dir)\n  mkdir -p \"$main_git_dir/info\"\n  for file in \"$@\"; do \n    if ! grep -q \"^$file$\" \"$main_git_dir/info/exclude\" 2>/dev/null; then \n      echo \"$file\" >> \"$main_git_dir/info/exclude\"\n    fi\n  done\n}; f"
-	excludes = !cat \"$(git rev-parse --git-common-dir)/info/exclude\"
-	exclude = "!f() { \n  main_git_dir=$(git rev-parse --git-common-dir)\n  mkdir -p \"$main_git_dir/info\"\n  for file in \"$@\"; do \n    if ! grep -q \"^$file$\" \"$main_git_dir/info/exclude\" 2>/dev/null; then \n      echo \"$file\" >> \"$main_git_dir/info/exclude\"\n    fi\n  done\n}; f"
+	; ignore-local = "!f() { \n  main_git_dir=$(git rev-parse --git-common-dir)\n  mkdir -p \"$main_git_dir/info\"\n  for file in \"$@\"; do \n    if ! grep -q \"^$file$\" \"$main_git_dir/info/exclude\" 2>/dev/null; then \n      echo \"$file\" >> \"$main_git_dir/info/exclude\"\n    fi\n  done\n}; f"
+	; excludes = !cat \"$(git rev-parse --git-common-dir)/info/exclude\"
+  ; exclude = "!f() { \n  main_git_dir=$(git rev-parse --git-common-dir)\n  mkdir -p \"$main_git_dir/info\"\n  for file in \"$@\"; do \n    if ! grep -q \"^$file$\" \"$main_git_dir/info/exclude\" 2>/dev/null; then \n      echo \"$file\" >> \"$main_git_dir/info/exclude\"\n    fi\n  done\n}; f"
 	edit-exclude = !$EDITOR \"$(git rev-parse --git-common-dir)/info/exclude\"
 [user]
 	email = caddyglow@pm.me
+[url "git@github.com:y0ug/"]
+	insteadOf = https://github.com/y0ug/
+[url "git@github.com:caddyglow/"]
+	insteadOf = https://github.com/caddyglow/

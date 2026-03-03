@@ -1,24 +1,20 @@
 customCommands:
   - key: "C"
-    command: '/home/rick/.claude/local/claude "Generate a git commit message on the first line and detailed body based on the staged changes. Describe the changes made in a way that helps someone reviewing change to understand what changed and why. Output only the commit message with no extra text." | git commit -F -'
+    command: "git cmc -y"
     context: "files"
-    description: "AI-generated commit with Claude Code"
-  - key: <c-n>
-    description: Pick AI commit
-    command: git diff --cached | aichat -r commit - | git commit -F - -e
-    context: files
-    output: terminal
+    description: "AI-generated commit"
   - key: <c-c>
-    output: terminal
-    description: Pick AI commit (no verify)
-    command: git diff --cached | aichat -r commit - | git commit -F -
+    description: Pick AI commit
+    command: "git cmc"
     context: files
+    output: terminal
   - key: "e"
     command: 'echo git show "{{.SelectedCommit.Hash}}:{{.SelectedPath}}" | wl-copy'
     context: "commitFiles"
   - key: "<c-a>"
     description: "amend the author of last commit"
-    command: 'git commit --amend --author="Hugo Caron <hca433@gmail.com>"'
+    command: 'git commit --amend --author="Caddy Glow <caddyglow@pm.me"'
+    # command: 'git commit --amend --author="Hugo Caron <hca433@gmail.com>"'
     context: "commits"
   - key: "<Delete>"
     command: "trash-put {{.SelectedFile.Name | quote}}"
@@ -35,26 +31,26 @@ customCommands:
   #     - type: "confirm"
   #       title: "Delete all untracked files?"
   #       body: "Are you sure you want to delete all untracked files and directories? This cannot be undone."
-    # yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
+  # yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
 # cyberdream theme for lazygit
 gui:
-    border: rounded
-    theme:
-        activeBorderColor:
-            - "#5ef1ff"
-        inactiveBorderColor:
-            - "#7b8496"
-        searchingActiveBorderColor:
-            - "#ff5ef1"
-        optionsTextColor:
-            - "#3c4048"
-        selectedLineBgColor:
-            - "#3c4048"
-        cherryPickedCommitBgColor:
-            - "#3c4048"
-        cherryPickedCommitFgColor:
-            - "#ff5ea0"
-        unstagedChangesColor:
-            - "#ffbd5e"
-        defaultFgColor:
-            - "#ffffff"
+  border: rounded
+  theme:
+    activeBorderColor:
+      - "#5ef1ff"
+    inactiveBorderColor:
+      - "#7b8496"
+    searchingActiveBorderColor:
+      - "#ff5ef1"
+    optionsTextColor:
+      - "#3c4048"
+    selectedLineBgColor:
+      - "#3c4048"
+    cherryPickedCommitBgColor:
+      - "#3c4048"
+    cherryPickedCommitFgColor:
+      - "#ff5ea0"
+    unstagedChangesColor:
+      - "#ffbd5e"
+    defaultFgColor:
+      - "#ffffff"
