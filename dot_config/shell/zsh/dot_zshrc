@@ -1,0 +1,189 @@
+#!/bin/zsh
+# .zshrc - Zsh interactive configuration
+
+_shared="${ZDOTDIR:h}"
+
+# --- Profiling ---
+[[ "$ZPROFRC" -ne 1 ]] || zmodload zsh/zprof
+alias zprofrc="ZPROFRC=1 zsh"
+
+# --- Zinit bootstrap ---
+ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git"
+if [[ ! -d $ZINIT_HOME ]]; then
+  mkdir -p "$(dirname $ZINIT_HOME)"
+  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
+source "$ZINIT_HOME/zinit.zsh"
+
+# --- History ---
+setopt bang_hist extended_history hist_expire_dups_first hist_find_no_dups \
+  hist_ignore_all_dups hist_ignore_dups hist_ignore_space hist_reduce_blanks \
+  hist_save_no_dups hist_verify inc_append_history NO_hist_beep
+HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/zsh_history"
+mkdir -p "${HISTFILE:h}"
+SAVEHIST=100000
+HISTSIZE=20000
+
+# --- Options and keybindings ---
+setopt prompt_subst transient_rprompt auto_cd interactive_comments
+unsetopt pathdirs
+bindkey -e
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey "^X^E" edit-command-line
+
+# --- Starship prompt ---
+export STARSHIP_CONFIG="$_shared/themes/mmc.toml"
+if (( $+commands[starship] )); then
+  eval "$(starship init zsh)"
+fi
+
+# --- Source shared files (before completions so LS_COLORS is available) ---
+source "$_shared/lscolors.sh"
+source "$_shared/functions.sh"
+source "$_shared/keychain.sh"
+source "$_shared/aliases.sh"
+
+# --- Completions ---
+autoload -Uz compinit
+() {
+  local zcd="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
+  [[ -d ${zcd:h} ]] || mkdir -p ${zcd:h}
+  if [[ -n $zcd(#qN.mh+24) ]]; then
+    compinit -i -d "$zcd"
+  else
+    compinit -C -d "$zcd"
+  fi
+}
+zstyle ':completion:*' menu no
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/.zcompcache"
+
+# --- Zinit plugins ---
+# 0a: fzf-tab and completions
+zinit wait"0a" lucid for \
+  atinit"
+    zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+    zstyle ':fzf-tab:*' switch-group '<' '>'
+    zstyle ':fzf-tab:*' fzf-flags --ignore-case
+  " \
+    Aloxaf/fzf-tab \
+  blockf \
+    zsh-users/zsh-completions
+
+# 0b: autosuggestions and syntax highlighting
+zinit wait"0b" lucid for \
+  atload"
+    ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd history completion)
+    ZSH_AUTOSUGGEST_USE_ASYNC=1
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
+    ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(\${ZSH_AUTOSUGGEST_ACCEPT_WIDGETS:#vi-add-eol})
+    bindkey '^Y' forward-word
+    bindkey '^ ' autosuggest-accept
+  " \
+    zsh-users/zsh-autosuggestions \
+  atload"
+    ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+    ZSH_HIGHLIGHT_STYLES[suffix-alias]=fg=cyan,underline
+    ZSH_HIGHLIGHT_STYLES[precommand]=fg=cyan,underline
+    ZSH_HIGHLIGHT_STYLES[arg0]=fg=blue
+    ZSH_HIGHLIGHT_STYLES[reserved-word]=fg=yellow
+  " \
+    zsh-users/zsh-syntax-highlighting
+
+# 0c: no-ps2
+zinit wait"0c" lucid for \
+  romkatv/zsh-no-ps2
+
+# --- Tool init ---
+# FZF
+if (( $+commands[fzf] )); then
+  source <(fzf --zsh)
+  _fzf_compgen_path() {
+    fd --hidden --follow --exclude .git . "$1" 2>/dev/null
+  }
+  _fzf_compgen_dir() {
+    fd --type d --hidden --follow --exclude .git . "$1" 2>/dev/null
+  }
+fi
+
+# Atuin
+if (( $+commands[atuin] )); then
+  export ATUIN_NOBIND=1
+  eval "$(atuin init zsh)"
+  bindkey '^r' _atuin_search_widget
+fi
+
+# Zoxide
+(( $+commands[zoxide] )) && eval "$(zoxide init zsh)"
+
+# Direnv
+(( $+commands[direnv] )) && eval "$(direnv hook zsh)"
+
+# Carapace
+if (( $+commands[carapace] )); then
+  export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
+  source <(carapace _carapace)
+fi
+
+# --- Sesh ---
+function sesh-sessions() {
+  {
+    exec </dev/tty
+    exec <&1
+    local session
+    session=$(sesh list --icons | fzf-tmux -p 80%,70% \
+      --no-sort --ansi --border-label ' sesh ' --prompt '> ' \
+      --header '  ^a all ^t tmux ^g configs ^x zoxide ^d tmux kill ^f find' \
+      --bind 'tab:down,btab:up' \
+      --bind 'ctrl-a:change-prompt(all> )+reload(sesh list --icons)' \
+      --bind 'ctrl-t:change-prompt(tmux> )+reload(sesh list -t --icons)' \
+      --bind 'ctrl-g:change-prompt(cfg> )+reload(sesh list -c --icons)' \
+      --bind 'ctrl-x:change-prompt(zox> )+reload(sesh list -z --icons)' \
+      --bind 'ctrl-f:change-prompt(find> )+reload(fd -H -d 2 -t d -E .Trash . ~)' \
+      --bind 'ctrl-d:execute(tmux kill-session -t {2..})+change-prompt(> )+reload(sesh list --icons)' \
+      --preview-window 'right:55%' \
+      --preview 'sesh preview {}')
+    zle reset-prompt >/dev/null 2>&1 || true
+    [[ -z "$session" ]] && return
+    sesh connect $session
+  }
+}
+zle -N sesh-sessions
+bindkey '^T' sesh-sessions
+
+# --- Shell integration (OSC 133) ---
+_prompt_executing=""
+_prompt_ps1_marked=""
+function __prompt_precmd() {
+  local ret="$?"
+  if [[ -n "$_prompt_executing" ]]; then
+    printf '\033]133;D;%s;aid=%s\007' "$ret" "$$"
+  fi
+  if [[ -z "$_prompt_ps1_marked" ]]; then
+    PS1=$'%{\e]133;A\a%}'"$PS1"$'%{\e]133;B\a\e]122;> \a%}'
+    PS2=$'%{\e]133;A\a%}'"$PS2"$'%{\e]133;B\a%}'
+    _prompt_ps1_marked=1
+  fi
+  _prompt_executing=0
+}
+function __prompt_preexec() {
+  printf '\033]133;C;\007'
+  _prompt_executing=1
+}
+precmd_functions+=(__prompt_precmd)
+preexec_functions+=(__prompt_preexec)
+
+# --- Zsh-specific aliases ---
+alias zdot='cd ${ZDOTDIR:h}'
+alias zbench='for i in {1..10}; do /usr/bin/env time zsh -lic exit; done'
+alias zshrc='${EDITOR:-vim} "$ZDOTDIR/.zshrc"'
+
+# --- Wrap-up ---
+unset _shared
+[[ "$PWD" != "/" ]] || cd
+[[ "$ZPROFRC" -eq 1 ]] && zprof
+[[ -v ZPROFRC ]] && unset ZPROFRC
+true

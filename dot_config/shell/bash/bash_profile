@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# bash_profile - Bash login shell: environment and PATH
+
+_shell_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$_shell_dir/env.sh"
+
+# PATH -- build once, deduplicate
+_prepend_path() { [[ -d "$1" ]] && [[ ":$PATH:" != *":$1:"* ]] && PATH="$1:$PATH"; }
+_prepend_path /usr/local/sbin
+_prepend_path /usr/local/bin
+_prepend_path /opt/local/sbin
+_prepend_path /opt/local/bin
+_prepend_path /opt/homebrew/sbin
+_prepend_path /opt/homebrew/bin
+_prepend_path "$HOME/.cargo/bin"
+_prepend_path "$HOME/.go/bin"
+_prepend_path "$HOME/.local/sbin"
+_prepend_path "$HOME/.local/bin"
+_prepend_path "$HOME/sbin"
+_prepend_path "$HOME/bin"
+unset -f _prepend_path
+export PATH
+
+# Source bashrc for interactive shells
+[[ -f "${_shell_dir}/bash/bashrc" ]] && source "${_shell_dir}/bash/bashrc"
+unset _shell_dir

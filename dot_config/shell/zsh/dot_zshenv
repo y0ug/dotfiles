@@ -1,0 +1,19 @@
+#!/bin/zsh
+# .zshenv - Zsh environment setup
+
+export ZDOTDIR="${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/shell/zsh}"
+source "${ZDOTDIR:h}/env.sh"
+
+# Ensure path arrays do not contain duplicates
+typeset -gU path fpath
+
+# PATH with glob (N) for optional dirs
+path=(
+  $HOME/{,s}bin(N)
+  $HOME/.local/{,s}bin(N)
+  $HOME/.go/{,s}bin(N)
+  $HOME/.cargo/{,s}bin(N)
+  /opt/{homebrew,local}/{,s}bin(N)
+  /usr/local/{,s}bin(N)
+  $path
+)

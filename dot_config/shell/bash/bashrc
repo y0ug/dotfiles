@@ -1,0 +1,144 @@
+#!/usr/bin/env bash
+# bashrc - Bash interactive configuration
+
+# Bail if not interactive
+[[ $- != *i* ]] && return
+
+_shared="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# --- Profiling ---
+if [[ "$BPROFRC" == 1 ]]; then
+  _bprof_start=$(date +%s%N)
+fi
+alias bprofrc="BPROFRC=1 bash"
+
+# --- History ---
+HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/bash/bash_history"
+mkdir -p "${HISTFILE%/*}"
+HISTSIZE=20000
+HISTFILESIZE=100000
+HISTCONTROL=ignoreboth:erasedups
+HISTIGNORE="ls:cd:cd -:pwd:exit:clear"
+shopt -s histappend
+PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND; }history -a"
+
+# --- Shell options ---
+shopt -s autocd 2>/dev/null
+shopt -s cdspell
+shopt -s direxpand 2>/dev/null
+shopt -s dirspell 2>/dev/null
+shopt -s checkwinsize
+shopt -s cmdhist
+shopt -s globstar 2>/dev/null
+shopt -s nocaseglob
+
+# --- Keybindings ---
+set -o emacs
+bind '"\C-x\C-e": edit-and-execute-command'
+
+# --- Completions ---
+if [[ -f /usr/share/bash-completion/bash_completion ]]; then
+  source /usr/share/bash-completion/bash_completion
+elif [[ -f /etc/bash_completion ]]; then
+  source /etc/bash_completion
+fi
+
+# --- Source shared files ---
+source "$_shared/lscolors.sh"
+source "$_shared/functions.sh"
+source "$_shared/keychain.sh"
+source "$_shared/aliases.sh"
+
+# --- Starship prompt ---
+export STARSHIP_CONFIG="$_shared/themes/mmc.toml"
+if command -v starship &>/dev/null; then
+  eval "$(starship init bash)"
+fi
+
+# --- Tool init ---
+# FZF
+if command -v fzf &>/dev/null; then
+  eval "$(fzf --bash)"
+  _fzf_compgen_path() {
+    fd --hidden --follow --exclude .git . "$1" 2>/dev/null
+  }
+  _fzf_compgen_dir() {
+    fd --type d --hidden --follow --exclude .git . "$1" 2>/dev/null
+  }
+fi
+
+# Atuin
+if command -v atuin &>/dev/null; then
+  export ATUIN_NOBIND=1
+  eval "$(atuin init bash)"
+  bind -x '"\C-r": __atuin_history'
+fi
+
+# Zoxide
+command -v zoxide &>/dev/null && eval "$(zoxide init bash)"
+
+# Direnv
+command -v direnv &>/dev/null && eval "$(direnv hook bash)"
+
+# Carapace
+if command -v carapace &>/dev/null; then
+  export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
+  source <(carapace _carapace bash)
+fi
+
+# --- Sesh ---
+if command -v sesh &>/dev/null && [[ -n "$TMUX" ]]; then
+  sesh-sessions() {
+    local session
+    session=$(sesh list --icons | fzf-tmux -p 80%,70% \
+      --no-sort --ansi --border-label ' sesh ' --prompt '> ' \
+      --header '  ^a all ^t tmux ^g configs ^x zoxide ^d tmux kill ^f find' \
+      --bind 'tab:down,btab:up' \
+      --bind 'ctrl-a:change-prompt(all> )+reload(sesh list --icons)' \
+      --bind 'ctrl-t:change-prompt(tmux> )+reload(sesh list -t --icons)' \
+      --bind 'ctrl-g:change-prompt(cfg> )+reload(sesh list -c --icons)' \
+      --bind 'ctrl-x:change-prompt(zox> )+reload(sesh list -z --icons)' \
+      --bind 'ctrl-f:change-prompt(find> )+reload(fd -H -d 2 -t d -E .Trash . ~)' \
+      --bind 'ctrl-d:execute(tmux kill-session -t {2..})+change-prompt(> )+reload(sesh list --icons)' \
+      --preview-window 'right:55%' \
+      --preview 'sesh preview {}')
+    [[ -z "$session" ]] && return
+    sesh connect "$session"
+  }
+  bind -x '"\C-t": sesh-sessions'
+fi
+
+# --- Shell integration (OSC 133) ---
+_prompt_executing=""
+__prompt_precmd() {
+  local ret="$?"
+  if [[ -n "$_prompt_executing" ]]; then
+    printf '\033]133;D;%s;aid=%s\007' "$ret" "$$"
+  fi
+  if [[ -z "$_prompt_ps1_marked" ]]; then
+    PS1=$'\001\033]133;A\007\002'"$PS1"$'\001\033]133;B\007\033]122;> \007\002'
+    PS2=$'\001\033]133;A\007\002'"$PS2"$'\001\033]133;B\007\002'
+    _prompt_ps1_marked=1
+  fi
+  _prompt_executing=0
+}
+__prompt_preexec() {
+  printf '\033]133;C;\007'
+  _prompt_executing=1
+}
+trap '__prompt_preexec' DEBUG
+PROMPT_COMMAND="__prompt_precmd${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+
+# --- Bash-specific aliases ---
+alias zdot='cd ${XDG_CONFIG_HOME:-$HOME/.config}/shell'
+alias bbench='for i in {1..10}; do /usr/bin/env time bash -lic exit; done'
+alias bashrc='${EDITOR:-vim} ${XDG_CONFIG_HOME:-$HOME/.config}/shell/bash/bashrc'
+
+# --- Wrap-up ---
+unset _shared
+[[ "$PWD" == "/" ]] && cd
+if [[ "$BPROFRC" == 1 ]]; then
+  _bprof_end=$(date +%s%N)
+  echo "bash startup: $(( (_bprof_end - _bprof_start) / 1000000 ))ms"
+  unset _bprof_start _bprof_end BPROFRC
+fi
