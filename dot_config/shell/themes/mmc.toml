@@ -127,4 +127,3 @@ pipestatus_format = '\[$pipestatus\]($style)'
 # format = '$output'
 # when = true
 # unsafe_no_escape = true
-
