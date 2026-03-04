@@ -102,10 +102,10 @@ shell = ["sh"]
 [shell]
 format = '[$indicator]($style)'
 fish_indicator = '🐟'            # 󰈺 🐟 🐠
-powershell_indicator = '_'
-pwsh_indicator = '>_'
-zsh_indicator = '󠀥%'
-bash_indicator = '󠀥$'
+powershell_indicator = '_ '
+pwsh_indicator = '>_ '
+zsh_indicator = '% '
+bash_indicator = '\$ '
 style = 'cyan bold'
 disabled = false
 
@@ -122,8 +122,9 @@ format = '[$symbol$int]($style)'
 symbol = '✘'
 pipestatus_format = '\[$pipestatus\]($style)'
 
-[custom.shell_prompt_start]
-command = '''printf 'AAAA\033]133;A\033\\''''
-format = '$output'
-when = true
-unsafe_no_escape = true
+# [custom.shell_prompt_start]
+# command = '''printf 'AAAA\033]133;A\033\\''''
+# format = '$output'
+# when = true
+# unsafe_no_escape = true
+
