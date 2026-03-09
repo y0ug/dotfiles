@@ -125,7 +125,10 @@ fi
 # Carapace
 if (( $+commands[carapace] )); then
   export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'
-  source <(carapace _carapace)
+  source <(carapace _carapace | sed 's/declare -x/local -x/g')
+  # Clean up leaked carapace vars inherited from parent shells
+  unset CARAPACE_COMPLINE CARAPACE_ZSH_HASH_DIRS CARAPACE_SHELL \
+        CARAPACE_SHELL_BUILTINS CARAPACE_SHELL_FUNCTIONS
 fi
 
 # --- Sesh ---

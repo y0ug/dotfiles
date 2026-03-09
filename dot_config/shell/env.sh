@@ -20,4 +20,3 @@ export PAGER=nvimpager
 # Source external env files
 [[ -e "$HOME/.profile" ]] && source "$HOME/.profile"
 [[ -e "$HOME/.local/share/bob/env/env.sh" ]] && source "$HOME/.local/share/bob/env/env.sh"
-[[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"

@@ -23,6 +23,7 @@ install_zsh() {
   _backup "$HOME/.zshenv"
   cat > "$HOME/.zshenv" <<'EOF'
 export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/shell/zsh"
+[[ -f "$ZDOTDIR/.zshenv" ]] && source "$ZDOTDIR/.zshenv"
 EOF
   echo "  wrote ~/.zshenv (ZDOTDIR -> $SHELL_DIR/zsh)"
 }
