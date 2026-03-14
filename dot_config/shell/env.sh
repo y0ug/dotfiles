@@ -20,3 +20,20 @@ export PAGER=nvimpager
 # Source external env files
 [[ -e "$HOME/.profile" ]] && source "$HOME/.profile"
 [[ -e "$HOME/.local/share/bob/env/env.sh" ]] && source "$HOME/.local/share/bob/env/env.sh"
+[[ -e "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+
+# Bun CLI
+export BUN_INSTALL="$HOME/.bun"
+case ":$PATH:" in
+  *":$BUN_INSTALL/bin:") ;;
+  *) PATH="$BUN_INSTALL/bin:$PATH" ;;
+esac
+
+_codex_legacy_bun_cache=":$HOME/.cache/.bun/bin:"
+if [[ ":$PATH:" == *"$_codex_legacy_bun_cache"* ]]; then
+  _codex_path_clean=":$PATH:"
+  _codex_path_clean="${_codex_path_clean//$_codex_legacy_bun_cache/:}"
+  PATH="${_codex_path_clean#:}"
+  PATH="${PATH%:}"
+fi
+unset _codex_legacy_bun_cache _codex_path_clean

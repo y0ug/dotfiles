@@ -86,6 +86,13 @@
     process = git-lfs filter-process
     required = true
 
+[user]
+  name = "Caddy Glow"
+
+  email  = "caddyglow@pm.me"
+[core]
+
+   sshCommand = "SSH_AUTH_SOCK= ssh -i ~/.ssh/caddyglow_ed25519 -o IdentitiesOnly=yes"
 [includeIf "gitdir:~/projects/"]
   path = ~/.gitconfig-personal
 
