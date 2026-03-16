@@ -11,7 +11,7 @@ typeset -gU path fpath
 path=(
   $HOME/{,s}bin(N)
   $HOME/.local/{,s}bin(N)
-  $HOME/.go/{,s}bin(N)
+  $HOME/go/{,s}bin(N)
   $HOME/.cache/.bun/bin(N)
   $HOME/.cargo/{,s}bin(N)
   /opt/{homebrew,local}/{,s}bin(N)

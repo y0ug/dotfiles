@@ -32,6 +32,19 @@ autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey "^X^E" edit-command-line
 
+# alt/ctl left righ move word
+bindkey "\e[1;5C" forward-word
+bindkey "\e[1;5D" backward-word
+bindkey "\e[1;3C" forward-word
+bindkey "\e[1;3D" backward-word
+
+# Also try these variants:
+bindkey "\e[1;5A" up-line-or-history    # Ctrl+Up
+bindkey "\e[1;5B" down-line-or-history  # Ctrl+Down
+
+# Delete char
+bindkey "\e[3~" delete-char
+
 # --- Starship prompt ---
 export STARSHIP_CONFIG="$_shared/themes/mmc.toml"
 if (( $+commands[starship] )); then
