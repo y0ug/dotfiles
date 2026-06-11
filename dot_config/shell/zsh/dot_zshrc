@@ -25,7 +25,7 @@ SAVEHIST=100000
 HISTSIZE=20000
 
 # --- Options and keybindings ---
-setopt prompt_subst transient_rprompt auto_cd interactive_comments
+setopt prompt_subst transient_rprompt auto_cd interactive_comments glob_dots
 unsetopt pathdirs
 bindkey -e
 autoload -Uz edit-command-line
@@ -57,7 +57,29 @@ source "$_shared/functions.sh"
 source "$_shared/keychain.sh"
 source "$_shared/aliases.sh"
 
+# --- Tool init ---
+# FZF has to load before fzf-tab so fzf-tab remains the final Tab widget.
+if (( $+commands[fzf] )) && [[ -t 0 && -t 1 ]]; then
+  _fzf_share="${commands[fzf]:A:h:h}/share/fzf"
+  [[ -r "$_fzf_share/key-bindings.zsh" ]] && source "$_fzf_share/key-bindings.zsh"
+  _fzf_compgen_path() {
+    fd --hidden --follow --exclude .git . "$1" 2>/dev/null
+  }
+  _fzf_compgen_dir() {
+    fd --type d --hidden --follow --exclude .git . "$1" 2>/dev/null
+  }
+  unset _fzf_share
+fi
+
 # --- Completions ---
+zinit lucid blockf for zsh-users/zsh-completions
+
+zstyle ':completion:*' menu no
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/.zcompcache"
+
 autoload -Uz compinit
 () {
   local zcd="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
@@ -68,23 +90,16 @@ autoload -Uz compinit
     compinit -C -d "$zcd"
   fi
 }
-zstyle ':completion:*' menu no
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/.zcompcache"
 
-# --- Zinit plugins ---
-# 0a: fzf-tab and completions
-zinit wait"0a" lucid for \
+zinit lucid for \
   atinit"
     zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
     zstyle ':fzf-tab:*' switch-group '<' '>'
-    zstyle ':fzf-tab:*' fzf-flags --ignore-case
+    zstyle ':fzf-tab:*' fzf-flags --ignore-case --bind=start:first,enter:accept
   " \
-    Aloxaf/fzf-tab \
-  blockf \
-    zsh-users/zsh-completions
+    Aloxaf/fzf-tab
+
+# --- Zinit plugins ---
 
 # 0b: autosuggestions and syntax highlighting
 zinit wait"0b" lucid for \
@@ -109,18 +124,6 @@ zinit wait"0b" lucid for \
 # 0c: no-ps2
 zinit wait"0c" lucid for \
   romkatv/zsh-no-ps2
-
-# --- Tool init ---
-# FZF
-if (( $+commands[fzf] )); then
-  source <(fzf --zsh)
-  _fzf_compgen_path() {
-    fd --hidden --follow --exclude .git . "$1" 2>/dev/null
-  }
-  _fzf_compgen_dir() {
-    fd --type d --hidden --follow --exclude .git . "$1" 2>/dev/null
-  }
-fi
 
 # Atuin
 if (( $+commands[atuin] )); then
