@@ -41,7 +41,6 @@
 
 [pull]
     rebase = true                   # Rebase instead of merge when pulling
-    ff = only                       # Fast-forward only
 
 [fetch]
     prune = true                    # Remove deleted remote branches
@@ -238,7 +237,7 @@
 	edit-exclude = !$EDITOR \"$(git rev-parse --git-common-dir)/info/exclude\"
 
 [user]
-	email = caddyglow@pm.me
+	email = 219252898+CaddyGlow@users.noreply.github.com
 
 [url "git@github.com:y0ug/"]
 	insteadOf = https://github.com/y0ug/

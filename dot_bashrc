@@ -1,1 +1,9 @@
 source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/bash/bashrc"
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/rick/.local/bin:$PATH"
+
+export PATH=/home/rick/.local/bin:$PATH
+
+[[ -e "/home/rick/.var/lib/lib/python3.13/site-packages/oci_cli/bin/oci_autocomplete.sh" ]] && source "/home/rick/.var/lib/lib/python3.13/site-packages/oci_cli/bin/oci_autocomplete.sh"

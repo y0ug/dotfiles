@@ -7,8 +7,7 @@ alias v=nvim vi=nvim vim=nvim
 alias l=ls
 alias t=tmux
 alias lg=lazygit
-alias xdg-open="openit open --no-open-with --terminal-mode=current"
-alias o=xdg-open
+alias o="openit open --no-open-with --terminal-mode=current"
 alias cr=cliprun
 
 # Git

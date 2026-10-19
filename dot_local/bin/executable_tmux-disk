@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Print free-space % per mount for the tmux status bar, colored green -> yellow -> red as it shrinks.
+# usage: tmux-disk MOUNT...
+for m in "$@"; do
+  read -r avail size < <(df -B1 --output=avail,size "$m" | tail -1)
+  pct=$(( avail * 100 / size ))
+  # gradient: >=50% green (a6d189), 50..20% green->yellow (e5c890), 20..0% yellow->red (e78284)
+  if   (( pct >= 50 )); then c1=(166 209 137); c2=(166 209 137); t=0
+  elif (( pct >= 20 )); then c1=(229 200 144); c2=(166 209 137); t=$(( (pct - 20) * 100 / 30 ))
+  else                       c1=(231 130 132); c2=(229 200 144); t=$(( pct * 100 / 20 )); fi
+  col=$(printf '#%02x%02x%02x' \
+    $(( c1[0] + (c2[0]-c1[0]) * t / 100 )) \
+    $(( c1[1] + (c2[1]-c1[1]) * t / 100 )) \
+    $(( c1[2] + (c2[2]-c1[2]) * t / 100 )))
+  printf '#[fg=#a5adce]%s #[fg=%s,bold]%d%%#[nobold]  #[fg=#626880]│ ' "$m" "$col" "$pct"
+done
